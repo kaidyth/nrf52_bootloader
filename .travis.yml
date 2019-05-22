@@ -1,0 +1,36 @@
+dist: xenial
+language: c
+
+cache:
+  directories:
+    - $HOME/gcc-arm-none-eabi-8-2018-q4-major
+    - $HOME/nrf_sdk/15.3.0
+
+env:
+  global:
+    - GNU_INSTALL_ROOT="$HOME/gcc-arm-none-eabi-8-2018-q4-major/bin/"
+    - NORDIC_SDK_PATH="$HOME/nrf_sdk/15.3.0"
+    - PATH="$PATH:$HOME/gcc-arm-none-eabi-8-2018-q4-major/bin"
+
+  matrix:
+    - BOARD=sparkfun-pro-mini
+    - BOARD=sparkfun-pro-mini DEBUG=1
+    - BOARD=mdk-usb-dongle
+    - BOARD=mdk-usb-dongle DEBUG=1
+    - BOARD=pca10059
+    - BOARD=pca10059 DEBUG=1
+    - BOARD=pca10056
+    - BOARD=pca10056 DEBUG=1
+    - BOARD=mdk
+    - BOARD=mdk DEBUG=1
+
+before_install:
+  - chmod +x $TRAVIS_BUILD_DIR/.travis/before_install.sh
+
+install:
+  - $TRAVIS_BUILD_DIR/.travis/before_install.sh
+  # Verify the arm-none-eabi-gcc binary is working correctly
+  - arm-none-eabi-gcc --version
+
+script:
+  - make

@@ -6,6 +6,12 @@ cache:
     - $HOME/gcc-arm-none-eabi-8-2018-q4-major
     - $HOME/nrf_sdk/15.3.0
 
+addons:
+  apt:
+    packages:
+    - python
+    - python-pip
+
 env:
   global:
     - GNU_INSTALL_ROOT="$HOME/gcc-arm-none-eabi-8-2018-q4-major/bin/"
@@ -26,6 +32,8 @@ env:
 
 before_install:
   - chmod +x $TRAVIS_BUILD_DIR/.travis/before_install.sh
+  - ln -s default_private.pem private.pem
+  - ln -s default_dfu_public_key.c dfu_public_key.c
 
 install:
   - $TRAVIS_BUILD_DIR/.travis/before_install.sh

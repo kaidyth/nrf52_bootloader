@@ -1,0 +1,3 @@
+*.pem
+dfu_public_key.c
+_build_*

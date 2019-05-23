@@ -41,4 +41,4 @@ install:
   - arm-none-eabi-gcc --version
 
 script:
-  - make
+  - make clean default

@@ -202,6 +202,7 @@ CFLAGS += -fno-builtin -fshort-enums
 ifeq ($(DEBUG),1)
 CFLAGS += -DBOOTLOADER_DEBUG
 CFLAGS += -DDEBUG_NRF
+CFLAGS += -DDEBUG
 CFLAGS += -DNRF_DFU_DEBUG_VERSION
 endif
 # C++ flags common to all targets

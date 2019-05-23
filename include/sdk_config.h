@@ -6410,6 +6410,10 @@
 #define SEGGER_RTT_CONFIG_DEFAULT_MODE 0
 #endif
 
+#ifndef NRF_DFU_SERIAL_UART_USES_HWFC
+#define NRF_DFU_SERIAL_UART_USES_HWFC 0
+#endif
+
 // <<< end of configuration section >>>
 #endif //SDK_CONFIG_H
 

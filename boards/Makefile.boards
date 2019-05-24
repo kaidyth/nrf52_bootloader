@@ -26,6 +26,12 @@ SRC_FILES += \
   $(SDK_ROOT)/components/libraries/log/src/nrf_log_str_formatter.c \
   $(SDK_ROOT)/components/libraries/util/app_error_weak.c \
   $(SDK_ROOT)/components/libraries/scheduler/app_scheduler.c \
+  $(SDK_ROOT)/components/libraries/usbd/app_usbd.c \
+  $(SDK_ROOT)/components/libraries/usbd/class/cdc/acm/app_usbd_cdc_acm.c \
+  $(SDK_ROOT)/components/libraries/usbd/app_usbd_core.c \
+  $(SDK_ROOT)/components/libraries/usbd/app_usbd_serial_num.c \
+  $(SDK_ROOT)/components/libraries/usbd/app_usbd_string_desc.c \
+  $(SDK_ROOT)/components/libraries/util/app_util_platform.c \
   $(SDK_ROOT)/components/libraries/util/app_util_platform.c \
   $(SDK_ROOT)/components/libraries/crc32/crc32.c \
   $(SDK_ROOT)/components/libraries/mem_manager/mem_manager.c \
@@ -43,6 +49,15 @@ SRC_FILES += \
   $(SDK_ROOT)/components/libraries/ringbuf/nrf_ringbuf.c \
   $(SDK_ROOT)/components/libraries/experimental_section_vars/nrf_section_iter.c \
   $(SDK_ROOT)/components/libraries/strerror/nrf_strerror.c \
+  $(SDK_ROOT)/components/libraries/slip/slip.c \
+  $(SDK_ROOT)/integration/nrfx/legacy/nrf_drv_clock.c \
+  $(SDK_ROOT)/integration/nrfx/legacy/nrf_drv_power.c \
+  $(SDK_ROOT)/modules/nrfx/hal/nrf_nvmc.c \
+  $(SDK_ROOT)/modules/nrfx/soc/nrfx_atomic.c \
+  $(SDK_ROOT)/modules/nrfx/drivers/src/nrfx_clock.c \
+  $(SDK_ROOT)/modules/nrfx/drivers/src/nrfx_power.c \
+  $(SDK_ROOT)/modules/nrfx/drivers/src/nrfx_systick.c \
+  $(SDK_ROOT)/modules/nrfx/drivers/src/nrfx_usbd.c \
   $(SDK_ROOT)/modules/nrfx/mdk/system_nrf52840.c \
   $(SDK_ROOT)/components/libraries/crypto/backend/cc310_bl/cc310_bl_backend_ecc.c \
   $(SDK_ROOT)/components/libraries/crypto/backend/cc310_bl/cc310_bl_backend_ecdsa.c \
@@ -65,9 +80,6 @@ SRC_FILES += \
   $(SDK_ROOT)/components/libraries/bootloader/dfu/nrf_dfu_svci.c \
   $(SDK_ROOT)/components/libraries/bootloader/dfu/nrf_dfu_svci_handler.c \
   $(SDK_ROOT)/components/libraries/svc/nrf_svc_handler.c \
-  $(SDK_ROOT)/external/segger_rtt/SEGGER_RTT.c \
-  $(SDK_ROOT)/external/segger_rtt/SEGGER_RTT_Syscalls_GCC.c \
-  $(SDK_ROOT)/external/segger_rtt/SEGGER_RTT_printf.c \
   $(SDK_ROOT)/components/libraries/bootloader/nrf_bootloader.c \
   $(SDK_ROOT)/components/libraries/bootloader/nrf_bootloader_app_start.c \
   $(SDK_ROOT)/components/libraries/bootloader/nrf_bootloader_app_start_final.c \
@@ -90,6 +102,9 @@ SRC_FILES += \
   $(SDK_ROOT)/components/libraries/bootloader/dfu/nrf_dfu_utils.c \
   $(SDK_ROOT)/components/libraries/bootloader/dfu/nrf_dfu_validation.c \
   $(SDK_ROOT)/components/libraries/bootloader/dfu/nrf_dfu_ver_validation.c \
+  $(SDK_ROOT)/components/libraries/bootloader/serial_dfu/nrf_dfu_serial_usb.c \
+  $(SDK_ROOT)/components/libraries/bootloader/serial_dfu/nrf_dfu_serial.c \
+  $(SDK_ROOT)/external/utf_converter/utf.c \
   $(SDK_ROOT)/components/ble/common/ble_srv_common.c \
   $(SDK_ROOT)/components/libraries/crypto/backend/oberon/oberon_backend_chacha_poly_aead.c \
   $(SDK_ROOT)/components/libraries/crypto/backend/oberon/oberon_backend_ecc.c \
@@ -167,6 +182,14 @@ INC_FOLDERS += \
   $(SDK_ROOT)/integration/nrfx \
   $(SDK_ROOT)/integration/nrfx/legacy \
   $(SDK_ROOT)/external/segger_rtt \
+  $(SDK_ROOT)/components/libraries/slip \
+  $(SDK_ROOT)/components/libraries/queue \
+  $(SDK_ROOT)/components/libraries/mutex \
+  $(SDK_ROOT)/components/libraries/ringbuf \
+  $(SDK_ROOT)/components/libraries/usbd/class/cdc/acm \
+  $(SDK_ROOT)/components/libraries/usbd/class/cdc \
+  $(SDK_ROOT)/components/libraries/usbd \
+  $(SDK_ROOT)/external/utf_converter \
 
 # Libraries common to all targets
 LIB_FILES += \
@@ -269,7 +292,7 @@ $(foreach target, $(TARGETS), $(call define_target, $(target)))
 # Flash the program
 flash_bootloader: default
 	@echo Flashing: $(OUTPUT_DIRECTORY)/nrf52840_xxaa.hex
-	nrfjprog -f nrf52 --program $(OUTPUT_DIRECTORY)/nrf52840_xxaa.hex --sectorerase
+	nrfjprog -f nrf52 --program $(OUTPUT_DIRECTORY)/nrf52840_xxaa.hex --sectoranduicrerase
 ifeq ($(BOARD), "pca10059")
   nrfjprog --memwr 0x10001304 --val 0xFFFFFFFD
 endif
@@ -283,7 +306,7 @@ flash_softdevice:
 
 flash: merge
 	@echo Flashing: $(OUTPUT_DIRECTORY)/nrf52840_xxaa_s140.hex
-	nrfjprog -f nrf52 --reset --program $(OUTPUT_DIRECTORY)/nrf52840_xxaa_s140.hex --sectorerase
+	nrfjprog -f nrf52 --reset --program $(OUTPUT_DIRECTORY)/nrf52840_xxaa_s140.hex --sectoranduicrerase
 
 # Merge application and softdevice
 merge: default

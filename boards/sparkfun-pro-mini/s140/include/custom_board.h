@@ -75,7 +75,7 @@ extern "C" {
 #define TX_PIN_NUMBER  17
 #define CTS_PIN_NUMBER 0xFFFFFFFF  //NC
 #define RTS_PIN_NUMBER 0xFFFFFFFF  //NC
-#define HWFC           true
+#define HWFC           false
 
 #define BSP_QSPI_SCK_PIN   19
 #define BSP_QSPI_CSN_PIN   9

@@ -51,9 +51,9 @@ extern "C" {
 
 #define LEDS_INV_MASK  LEDS_MASK
 
-#define BSP_LED_0      22
-#define BSP_LED_1      23
-#define BSP_LED_2      24
+#define BSP_LED_0      LED_1
+#define BSP_LED_1      LED_2
+#define BSP_LED_2      LED_3
 
 #define BUTTONS_NUMBER         1
 #define BUTTON_1               NRF_GPIO_PIN_MAP(1,0)  // on board
@@ -76,7 +76,6 @@ extern "C" {
 #define BSP_QSPI_IO1_PIN   NRF_GPIO_PIN_MAP(1,4)
 #define BSP_QSPI_IO2_PIN   NRF_GPIO_PIN_MAP(1,2)
 #define BSP_QSPI_IO3_PIN   NRF_GPIO_PIN_MAP(1,1)
-
 
 #ifdef __cplusplus
 }

@@ -76,7 +76,7 @@
 
 
 #ifndef NRF_BL_APP_SIGNATURE_CHECK_REQUIRED
-#define NRF_BL_APP_SIGNATURE_CHECK_REQUIRED 0
+#define NRF_BL_APP_SIGNATURE_CHECK_REQUIRED 1
 #endif
 
 // <q> NRF_BL_DFU_ALLOW_UPDATE_FROM_APP  - Whether to allow the app to receive firmware updates for the bootloader to activate.
@@ -98,7 +98,7 @@
 // <e> NRF_BL_DFU_ENTER_METHOD_BUTTON - Enter DFU mode on button press.
 //==========================================================
 #ifndef NRF_BL_DFU_ENTER_METHOD_BUTTON
-#define NRF_BL_DFU_ENTER_METHOD_BUTTON 1
+#define NRF_BL_DFU_ENTER_METHOD_BUTTON 0
 #endif
 // <o> NRF_BL_DFU_ENTER_METHOD_BUTTON_PIN  - Button for entering DFU mode.
 
@@ -152,7 +152,7 @@
 // <47=> 47 (P1.15)
 
 #ifndef NRF_BL_DFU_ENTER_METHOD_BUTTON_PIN
-#define NRF_BL_DFU_ENTER_METHOD_BUTTON_PIN 25
+#define NRF_BL_DFU_ENTER_METHOD_BUTTON_PIN 32
 #endif
 
 // </e>
@@ -175,7 +175,7 @@
 
 
 #ifndef NRF_BL_DFU_ENTER_METHOD_BUTTONLESS
-#define NRF_BL_DFU_ENTER_METHOD_BUTTONLESS 0
+#define NRF_BL_DFU_ENTER_METHOD_BUTTONLESS 1
 #endif
 
 // </h>
@@ -1879,7 +1879,7 @@
 // <i> Note: This value is not editable in Configuration Wizard.
 // <i> List of product names that is defined the same way like in @ref APP_USBD_STRINGS_MANUFACTURER.
 #ifndef APP_USBD_STRINGS_PRODUCT
-#define APP_USBD_STRINGS_PRODUCT APP_USBD_STRING_DESC("Secure DFU Bootloader")
+#define APP_USBD_STRINGS_PRODUCT APP_USBD_STRING_DESC("Kaidyth DFU Bootloader")
 #endif
 
 // </e>

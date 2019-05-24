@@ -60,6 +60,11 @@
 #include "app_error_weak.h"
 #include "nrf_bootloader_info.h"
 #include "nrf_delay.h"
+#include "nrf_gpio.h"
+#include "nrf_power.h"
+
+#define DFU_MAGIC_OTA_APPJUM            BOOTLOADER_DFU_START
+#define DFU_DBL_RESET_DELAY             500
 
 static void on_error(void)
 {

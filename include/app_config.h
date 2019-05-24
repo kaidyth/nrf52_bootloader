@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#define _PINNUM(port, pin) ((port)*32 + (pin))
+
 #ifdef BOOTLOADER_DEBUG
 
 #ifndef NRF_LOG_ENABLED
@@ -21,6 +23,14 @@ extern "C" {
 
 #ifndef NRFX_USBD_CONFIG_LOG_ENABLED
 #define NRFX_USBD_CONFIG_LOG_ENABLED 1
+#endif
+
+#ifndef APP_USBD_CDC_ACM_CONFIG_LOG_ENABLED
+#define APP_USBD_CDC_ACM_CONFIG_LOG_ENABLED 1
+#endif
+
+#ifndef APP_USBD_CDC_ACM_CONFIG_LOG_LEVEL
+#define APP_USBD_CDC_ACM_CONFIG_LOG_LEVEL 4
 #endif
 
 #ifndef NRFX_USBD_CONFIG_LOG_LEVEL
@@ -57,6 +67,10 @@ extern "C" {
 
 #ifndef NRF_SDH_LOG_LEVEL
 #define NRF_SDH_LOG_LEVEL 4
+#endif
+
+#ifndef NRF_BL_APP_SIGNATURE_CHECK_REQUIRED
+#define NRF_BL_APP_SIGNATURE_CHECK_REQUIRED 0
 #endif
 
 #endif // BOOTLOADER_DEBUG

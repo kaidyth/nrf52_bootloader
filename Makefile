@@ -18,21 +18,25 @@ $(BOARD_LIST):
 flash: default
 	$(MAKE) flash -C boards/$(BOARD)/s140
 
-clean_build: clean default
+clean_build: clean
+	$(MAKE) dfu_package -C boards/$(BOARD)/s140
 
-clean_flash: clean default
+clean_flash: clean dfu_package
 	$(MAKE) erase flash -C boards/$(BOARD)/s140
 
 clean: check-env
 ifneq ($(filter $(BOARD),$(BOARD_LIST)),)
 	@cd boards/$(BOARD)/s140 && $(MAKE) clean
 	@rm -rf $(BOARD).hex
+	@rm -f $(BOARD)_s140.zip
+	@rm -f debug_$(BOARD)_s140.zip
 else
 	@for board in $(BOARD_LIST); do \
 		cd boards/$$board/s140 && $(MAKE) clean; \
 		cd ../../..; \
 	done
 	@rm -f *.hex
+	@rm -f *.zip
 endif
 
 .PHONY: check-env

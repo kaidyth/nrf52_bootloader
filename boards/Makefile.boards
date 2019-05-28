@@ -3,6 +3,12 @@ TARGETS          := nrf52840_xxaa
 OUTPUT_DIRECTORY := _build
 
 DEBUG ?= 0
+SD_REQ := 0xB6
+BOARD_DIST := $(BOARD)_sd140.zip
+
+ifeq ($(DEBUG), 1)
+BOARD_DIST := debug_$(BOARD_DIST)
+endif
 
 SDK_ROOT := $(NORDIC_SDK_PATH)
 PROJ_DIR := $(CURDIR)/../../..
@@ -309,7 +315,7 @@ flash: dfu_package
 	nrfjprog -f nrf52 --reset --program $(OUTPUT_DIRECTORY)/nrf52840_xxaa_s140.hex --sectoranduicrerase
 
 dfu_package: merge
-	nrfutil pkg generate --sd-req 0xB6 --hw-version 1 --key-file $(PROJ_DIR)/private.pem --application-version 1 --application $(OUTPUT_DIRECTORY)/nrf52840_xxaa_s140.hex $(BOARD)_s140.zip
+	nrfutil pkg generate --sd-req $(SD_REQ) --hw-version 1 --key-file $(PROJ_DIR)/private.pem --application-version 1 --application $(OUTPUT_DIRECTORY)/nrf52840_xxaa_s140.hex $(PROJ_DIR)/$(BOARD_DIST)
 
 # Merge application and softdevice
 merge: default

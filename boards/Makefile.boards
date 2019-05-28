@@ -309,7 +309,7 @@ flash: dfu_package
 	nrfjprog -f nrf52 --reset --program $(OUTPUT_DIRECTORY)/nrf52840_xxaa_s140.hex --sectoranduicrerase
 
 dfu_package: merge
-  nrfutil pkg generate --sd-req 0xB6 --hw-version 1 --key-file $(PROJ_DIR)/private.pem --application-version 1 --application $(OUTPUT_DIRECTORY)/nrf52840_xxaa_s140.hex $(BOARD)_s140.zip
+	nrfutil pkg generate --sd-req 0xB6 --hw-version 1 --key-file $(PROJ_DIR)/private.pem --application-version 1 --application $(OUTPUT_DIRECTORY)/nrf52840_xxaa_s140.hex $(BOARD)_s140.zip
 
 # Merge application and softdevice
 merge: default

@@ -5,7 +5,7 @@ BOARD_LIST:=$(sort $(subst /,,$(subst boards/,,$(dir $(wildcard boards/*/)))))
 
 default: check-env
 ifneq ($(filter $(BOARD),$(BOARD_LIST)),)
-	$(MAKE) $(BOARD)
+	$(MAKE) merge -C boards/$(BOARD)/s140
 else
 	$(error Run `make` with a board specified: ($(BOARD_LIST)))
 endif
@@ -15,19 +15,13 @@ all: check-env $(BOARD_LIST)
 $(BOARD_LIST):
 	$(MAKE) -C boards/$@/s140
 
-flash:
-ifneq ($(filter $(BOARD),$(BOARD_LIST)),)
+flash: default
 	$(MAKE) flash -C boards/$(BOARD)/s140
-else
-	$(error Run `make` with a board specified: ($(BOARD_LIST)))
-endif
 
-clean_flash: default
-ifneq ($(filter $(BOARD),$(BOARD_LIST)),)
+clean_build: clean default
+
+clean_flash: clean default
 	$(MAKE) erase flash -C boards/$(BOARD)/s140
-else
-	$(error Run `make` with a board specified: ($(BOARD_LIST)))
-endif
 
 clean: check-env
 ifneq ($(filter $(BOARD),$(BOARD_LIST)),)

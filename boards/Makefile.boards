@@ -290,7 +290,7 @@ $(foreach target, $(TARGETS), $(call define_target, $(target)))
 .PHONY: flash_all flash_bootloader flash_softdevice erase
 
 # Flash the program
-flash_bootloader: default
+flash_bootloader: dfu_package
 	@echo Flashing: $(OUTPUT_DIRECTORY)/nrf52840_xxaa.hex
 	nrfjprog -f nrf52 --program $(OUTPUT_DIRECTORY)/nrf52840_xxaa.hex --sectoranduicrerase
 ifeq ($(BOARD), "pca10059")
@@ -299,14 +299,17 @@ endif
 	nrfjprog -f nrf52 --reset
 
 # Flash softdevice
-flash_softdevice:
+flash_softdevice: dfu_package
 	@echo Flashing: s140_nrf52_6.1.1_softdevice.hex
 	nrfjprog -f nrf52 --program $(SDK_ROOT)/components/softdevice/s140/hex/s140_nrf52_6.1.1_softdevice.hex --sectorerase
 	nrfjprog -f nrf52 --reset
 
-flash: merge
+flash: dfu_package
 	@echo Flashing: $(OUTPUT_DIRECTORY)/nrf52840_xxaa_s140.hex
 	nrfjprog -f nrf52 --reset --program $(OUTPUT_DIRECTORY)/nrf52840_xxaa_s140.hex --sectoranduicrerase
+
+dfu_package: merge
+  nrfutil pkg generate --sd-req 0xB6 --hw-version 1 --key-file $(PROJ_DIR)/private.pem --application-version 1 --application $(OUTPUT_DIRECTORY)/nrf52840_xxaa_s140.hex $(BOARD)_s140.zip
 
 # Merge application and softdevice
 merge: default

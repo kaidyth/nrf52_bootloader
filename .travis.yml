@@ -34,6 +34,9 @@ before_install:
   - chmod +x $TRAVIS_BUILD_DIR/.travis/before_install.sh
   - ln -s default_private.pem private.pem
   - ln -s default_dfu_public_key.c dfu_public_key.c
+  - (wget https://www.nordicsemi.com/api/sitecore/Products/DownloadPlatform --post-data=fileid=8F19D314130548209E75EFFADD9348DB -O cli-tools.tar && tar -xv -f cli-tools.tar && mv mergehex mergehex_all && mv mergehex_all/mergehex .)
+  - export PATH=.:$PATH
+  - mergehex --version
 
 install:
   - $TRAVIS_BUILD_DIR/.travis/before_install.sh
@@ -41,4 +44,4 @@ install:
   - arm-none-eabi-gcc --version
 
 script:
-  - make clean default
+  - make clean_build

@@ -1,3 +1,4 @@
+SHELL := env PATH=$(PATH) /bin/bash
 PROJECT_NAME     := secure_bootloader_ble_s140
 TARGETS          := nrf52840_xxaa
 OUTPUT_DIRECTORY := _build

@@ -1,5 +1,3 @@
-SHELL := env PATH=$(PATH) /bin/bash
-
 GIT_VERSION = $(shell git describe --dirty --always --tags)
 
 BOARD?=

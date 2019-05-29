@@ -7,6 +7,11 @@ extern "C" {
 
 #define _PINNUM(port, pin) ((port)*32 + (pin))
 
+#ifndef NRF_DFU_REQUIRE_SIGNED_APP_UPDATE
+#define NRF_DFU_REQUIRE_SIGNED_APP_UPDATE 0
+#endif
+
+
 #ifndef NRF_BL_APP_SIGNATURE_CHECK_REQUIRED
 #define NRF_BL_APP_SIGNATURE_CHECK_REQUIRED 0
 #endif

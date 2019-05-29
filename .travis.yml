@@ -43,7 +43,7 @@ install:
   - arm-none-eabi-gcc --version
   # Verify mergehex is loaded into PATH
   - mergehex --version
-  - pip install -u nrfutil
+  - pip install --user nrfutil
 
 script:
   - make clean_build

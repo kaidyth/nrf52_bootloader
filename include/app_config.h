@@ -7,6 +7,10 @@ extern "C" {
 
 #define _PINNUM(port, pin) ((port)*32 + (pin))
 
+#ifndef NRF_BL_APP_SIGNATURE_CHECK_REQUIRED
+#define NRF_BL_APP_SIGNATURE_CHECK_REQUIRED 0
+#endif
+
 #ifdef BOOTLOADER_DEBUG
 
 #ifndef NRF_LOG_ENABLED
@@ -67,10 +71,6 @@ extern "C" {
 
 #ifndef NRF_SDH_LOG_LEVEL
 #define NRF_SDH_LOG_LEVEL 4
-#endif
-
-#ifndef NRF_BL_APP_SIGNATURE_CHECK_REQUIRED
-#define NRF_BL_APP_SIGNATURE_CHECK_REQUIRED 0
 #endif
 
 #endif // BOOTLOADER_DEBUG

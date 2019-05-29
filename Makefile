@@ -21,10 +21,10 @@ flash: default
 	$(MAKE) flash -C boards/$(BOARD)/s140
 
 clean_build: clean
-	$(MAKE) dfu_package -C boards/$(BOARD)/s140
+	$(MAKE) -C boards/$(BOARD)/s140 dfu_package
 
-clean_flash: clean dfu_package
-	$(MAKE) erase flash -C boards/$(BOARD)/s140
+clean_flash: clean_build
+	$(MAKE) -C boards/$(BOARD)/s140 erase flash
 
 clean: check-env
 ifneq ($(filter $(BOARD),$(BOARD_LIST)),)

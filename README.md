@@ -10,16 +10,13 @@ A secure bluetooth DFU bootloader for nRF52 with support for the following board
 
 ## Features
 
-- DFU over BLE OTA
-- Self Upgradable via OTA
+- DFU over BLE OTA + USB Serial
+- Self Upgradable via OTA + USB Serial
 
 ### Planned Features
 
-- DFU over Serial
-- Self-Upgradable via USB
 - Double Reset DFU Trigger
 - Application Wipe via 2 Pin Reset
-- DFU over Serial
 - DFU using UF2
 - Auto enter DFU briefly on startup for DTR auto-reset
 

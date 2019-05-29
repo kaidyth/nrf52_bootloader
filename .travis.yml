@@ -10,6 +10,8 @@ addons:
   apt:
     packages:
     - dos2unix
+    - python
+    - python-pip
 
 env:
   global:
@@ -40,6 +42,7 @@ install:
   - arm-none-eabi-gcc --version
   # Verify mergehex is loaded into PATH
   - mergehex --version
+  - pip install nrfutil
 
 script:
   - make clean_build

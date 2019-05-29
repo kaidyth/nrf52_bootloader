@@ -17,7 +17,7 @@ env:
   global:
     - GNU_INSTALL_ROOT="$HOME/gcc-arm-none-eabi-8-2018-q4-major/bin/"
     - NORDIC_SDK_PATH="$HOME/nrf_sdk/15.3.0"
-    - export PY_USER_BIN=$(python -c 'import site; print(site.USER_BASE + "/bin")')
+    - PY_USER_BIN=$(python -c 'import site; print(site.USER_BASE + "/bin")')
     - PATH="$PATH:$HOME/gcc-arm-none-eabi-8-2018-q4-major/bin:$HOME/mergehex:$HOME/nrfjprog:$PY_USER_BIN"
 
   matrix:

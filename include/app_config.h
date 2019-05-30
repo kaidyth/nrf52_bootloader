@@ -7,16 +7,23 @@ extern "C" {
 
 #define _PINNUM(port, pin) ((port)*32 + (pin))
 
-#ifndef NRF_DFU_REQUIRE_SIGNED_APP_UPDATE
-#define NRF_DFU_REQUIRE_SIGNED_APP_UPDATE 0
+#ifndef NRF_DFU_BL_ACCEPT_SAME_VERSION
+#define NRF_DFU_BL_ACCEPT_SAME_VERSION 1
 #endif
 
+#ifndef NRF_DFU_REQUIRE_SIGNED_APP_UPDATE
+#define NRF_DFU_REQUIRE_SIGNED_APP_UPDATE 1
+#endif
 
 #ifndef NRF_BL_APP_SIGNATURE_CHECK_REQUIRED
 #define NRF_BL_APP_SIGNATURE_CHECK_REQUIRED 0
 #endif
 
 #ifdef BOOTLOADER_DEBUG
+
+#ifndef NRF_DFU_BL_ALLOW_DOWNGRADE
+#define NRF_DFU_BL_ALLOW_DOWNGRADE 1
+#endif
 
 #ifndef NRF_LOG_ENABLED
 #define NRF_LOG_ENABLED 1
@@ -79,6 +86,10 @@ extern "C" {
 #endif
 
 #endif // BOOTLOADER_DEBUG
+
+#ifndef NRF_DFU_BL_ALLOW_DOWNGRADE
+#define NRF_DFU_BL_ALLOW_DOWNGRADE 0
+#endif
 
 #ifdef __cplusplus
 }

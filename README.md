@@ -10,8 +10,10 @@ A secure bluetooth DFU bootloader for nRF52 with support for the following board
 
 ## Features
 
+- Based on nRF52 Secure Bootloader
 - DFU over BLE OTA + USB Serial
 - Self Upgradable via OTA + USB Serial
+- Optionally downgradable (`NRF_DFU_BL_ALLOW_DOWNGRADE` Makefile option)
 
 ### Planned Features
 
@@ -40,13 +42,15 @@ nrfjprog -f nf52 --reset
 
 ### Building/Development
 
-Take a look at the [Getting Started](https://github.com/charlesportwoodii/kaidyth_nrf52_bootloader/wiki/Getting-Started) page for more information on the dependencies needed.
-
-With your dependencies installed you can compile the project for supported boards by running `make`
+Cross platform builds are run through `Docker` to ensure build compatability, eliminate OS specific build issues, and ensure a functional build environment. Simply specify `DEBUG` and `BOARD` environment variables in `docker run` to build an appropriate build for your chip.
 
 ```
-make BOARD=<board>
+docker build . -t kaidyth_dfu/toolchain:latest
+docker run -v${PWD-.}:/app --env BOARD=mdk-usb-dongle kaidyth_dfu/toolchain:latest
 ```
 
-> Run `make` without a board specified to see a list of supported boards.
+Hex and .zip archives for DFU flashes are outputted to the `_build_<board>` directory after compilation succeeds.z
 
+> Note that patches the nRF52 SDK to to add some unoffocially supported functionality (such as `NRF_DFU_BL_ALLOW_DOWNGRADE` and `NRF_DFU_BL_ACCEPT_SAME_VERSION`). It's recommended to use the docker environment for building unless you plan on switching `NORDIC_SDK_PATH` between projects.
+
+If you're interested in setting up your own development environment without docker, take a look at the [Getting Started](https://github.com/charlesportwoodii/kaidyth_nrf52_bootloader/wiki/Getting-Started) page for more information on the dependencies needed.

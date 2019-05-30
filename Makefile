@@ -1,7 +1,7 @@
-GIT_VERSION = $(shell git describe --dirty --always --tags)
+BOARD ?=
+BOARD_LIST := $(sort $(subst /,,$(subst boards/,,$(dir $(wildcard boards/*/)))))
 
-BOARD?=
-BOARD_LIST:=$(sort $(subst /,,$(subst boards/,,$(dir $(wildcard boards/*/)))))
+rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
 default: check-env
 ifneq ($(filter $(BOARD),$(BOARD_LIST)),)
@@ -24,7 +24,7 @@ clean_build: clean
 clean_flash: clean_build
 	$(MAKE) -C boards/$(BOARD)/s140 erase flash
 
-clean: check-env
+clean: check-env patch
 ifneq ($(filter $(BOARD),$(BOARD_LIST)),)
 	@cd boards/$(BOARD)/s140 && $(MAKE) clean
 	@rm -rf $(BOARD).hex
@@ -50,3 +50,10 @@ private.pem:
 
 dfu_public_key.c: private.pem
 	nrfutil keys display --key pk --format code private.pem --out_file dfu_public_key.c
+
+patch:
+	@for file in $(subst ./sdk/,,$(call rwildcard,./sdk/,*.c)); do \
+		if patch -p0 -s -f --dry-run --reject-file /dev/null $(NORDIC_SDK_PATH)/$${file} ./sdk/$${file}; then \
+			patch --forward --unified $(NORDIC_SDK_PATH)/$${file} ./sdk/$${file}; \
+		fi \
+	done;

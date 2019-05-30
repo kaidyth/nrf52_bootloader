@@ -11,6 +11,7 @@ fi
 
 if [ -z "$(ls -A $HOME/nrf_sdk/15.3.0)" ]; then
     cd $HOME
+    mkdir -p $HOME/nrf_sdk/15.3.0
     wget https://www.nordicsemi.com/-/media/Software-and-other-downloads/SDKs/nRF5/Binaries/nRF5SDK153059ac345.zip -O nRF5_SDK_15.3.0_59ac345.zip
     unzip nRF5_SDK_15.3.0_59ac345.zip > /dev/null 2>&1
     mv nRF5_SDK_15.3.0_59ac345/* $HOME/nrf_sdk/15.3.0

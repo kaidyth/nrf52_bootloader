@@ -14,13 +14,12 @@ A secure bluetooth DFU bootloader for nRF52 with support for the following board
 - DFU over BLE OTA + USB Serial
 - Self Upgradable via OTA + USB Serial
 - Optionally downgradable (`NRF_DFU_BL_ALLOW_DOWNGRADE` Makefile option)
+- Double Reset DFU Trigger
 
 ### Planned Features
 
-- Double Reset DFU Trigger
 - Application Wipe via 2 Pin Reset
 - DFU using UF2
-- Auto enter DFU briefly on startup for DTR auto-reset
 
 ## Flashing
 

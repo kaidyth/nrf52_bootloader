@@ -59,14 +59,21 @@
 #include "app_error.h"
 #include "app_error_weak.h"
 #include "nrf_bootloader_info.h"
+#include "nrfx.h"
 #include "nrf_delay.h"
-#include "nrf_gpio.h"
 #include "nrf_power.h"
 
-#define DFU_MAGIC_OTA_APPJUM            BOOTLOADER_DFU_START
-#define DFU_DBL_RESET_DELAY             500
+#define DFU_DBLRST_MAGIC                0x5A1AD5
+#define DFU_DBLRST_DELAY                500
+#define DFU_DBLRST_MEMADDR              0x20002A90
+#define DFU_DBLRST_P2_MEMADDR           0x20002A94
 
-static void on_error(void)
+
+uint32_t* dblrst_mem = ((uint32_t*) DFU_DBLRST_MEMADDR);
+uint32_t* dlbrst_p2_mem = ((uint32_t*) DFU_DBLRST_P2_MEMADDR);
+
+
+static void do_reset(void)
 {
     NRF_LOG_FINAL_FLUSH();
 
@@ -78,6 +85,12 @@ static void on_error(void)
     NRF_BREAKPOINT_COND;
 #endif
     NVIC_SystemReset();
+}
+
+
+static void on_error(void)
+{
+    do_reset();
 }
 
 
@@ -144,6 +157,32 @@ int main(void)
 
     NRF_LOG_INFO("Inside main");
 
+    // Don't run the double reset check if we're already in DFU mode
+    uint8_t gpregret0 = nrf_power_gpregret_get();
+    if (gpregret0 != BOOTLOADER_DFU_START) {
+        // Trigger our first double reset
+        (*dblrst_mem) = DFU_DBLRST_MAGIC;
+
+        // If the previous reset
+        if ((*dblrst_mem) == DFU_DBLRST_MAGIC && (*dlbrst_p2_mem) == DFU_DBLRST_MAGIC) {
+            NRF_LOG_INFO("DBLRST: Double Reset detected, preparing to reboot into DFU mode.");
+            nrf_power_gpregret_set(BOOTLOADER_DFU_START);
+            do_reset();
+        }
+
+        // If the double reset memory region is populated set the GPREG and reset to force DFU mode
+        if ((*dblrst_mem) == DFU_DBLRST_MAGIC) {
+            (*dlbrst_p2_mem) = DFU_DBLRST_MAGIC;
+        }
+
+        // Wait 500ms for a second reset to occur, otherwise zero the memory registers
+        NRFX_DELAY_US(DFU_DBLRST_DELAY * 1000);
+    }
+
+    (*dblrst_mem) = 0;
+    (*dlbrst_p2_mem) = 0;
+
+    // Initiate the bootloader
     ret_val = nrf_bootloader_init(dfu_observer);
     APP_ERROR_CHECK(ret_val);
 

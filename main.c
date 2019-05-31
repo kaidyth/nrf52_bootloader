@@ -158,18 +158,18 @@ int main(void)
     // Don't run the double reset check if we're already in DFU mode
     uint8_t gpregret0 = nrf_power_gpregret_get();
     if (gpregret0 != BOOTLOADER_DFU_START) {
-
-        // If the previous reset
+        // Go into DFU mode if the magic double reset memory block is set
         if ((*dblrst_mem) == DFU_DBLRST_MAGIC) {
             NRF_LOG_INFO("DBLRST: Double Reset detected, preparing to reboot into DFU mode.");
             nrf_power_gpregret_set(BOOTLOADER_DFU_START);
             do_reset();
         }
 
-        // Trigger our first double reset
+        // Indicate we want to do a double reset
         (*dblrst_mem) = DFU_DBLRST_MAGIC;
 
-        // Wait 500ms for a second reset to occur, otherwise zero the memory registers
+        // Wait 500ms for a second reset to occur
+        // If a second reset doesn't occur, the memory register will be zerod
         NRFX_DELAY_US(DFU_DBLRST_DELAY * 1000);
     }
 

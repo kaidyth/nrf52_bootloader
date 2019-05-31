@@ -13,7 +13,6 @@ MEMORY
   mbr_params_page (r) : ORIGIN = 0x000FE000, LENGTH = 0x1000
 
   DBL_RESET (rwx) :  ORIGIN = 0x20002A90, LENGTH = 0x04
-  DBL_RESET_P2 (rwx) :  ORIGIN = 0x20002A94, LENGTH = 0x04
 }
 
 SECTIONS
@@ -44,10 +43,6 @@ SECTIONS
   {
 
   } > DBL_RESET
-  .dbl_reset_p2(NOLOAD) :
-  {
-
-  } > DBL_RESET_P2
   .mbr_params_page(NOLOAD) :
   {
     PROVIDE(__start_mbr_params_page = .);

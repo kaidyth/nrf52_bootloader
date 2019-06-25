@@ -2,20 +2,22 @@ PROJECT_NAME     := secure_bootloader_ble_s140
 TARGETS          := nrf52840_xxaa
 OUTPUT_DIRECTORY := _build
 
-GIT_VERSION = $(shell git describe --dirty --always --tags)
-
 DEBUG ?= 0
 SD_REQ := 0xB6
+
+GIT_VERSION := $(shell git describe --always --tags)
 BOARD_DIST := $(BOARD)_bootloader-$(GIT_VERSION)
 
 ifeq ($(DEBUG), 1)
-BOARD_DIST := debug_$(BOARD_DIST)
+GIT_VERSION = $(shell git describe --dirty --always --tags)
+BOARD_DIST := debug_$(BOARD)_bootloader-$(GIT_VERSION)
 endif
 
 BUILD_NUMBER := 1
 
-ifdef TRAVIS_BUILD_NUMBER
-BUILD_NUMBER := $(TRAVIS_BUILD_NUMBER)
+ifdef TRAVIS_TAG
+BUILD_NUMBER := $(shell python $(TRAVIS_BUILD_DIR)/blver.py $(TRAVIS_TAG))
+$(info HEX_REVISION=$(BUILD_NUMBER))
 endif
 
 SDK_ROOT := $(NORDIC_SDK_PATH)

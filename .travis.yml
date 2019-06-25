@@ -59,4 +59,4 @@ deploy:
   on:
     repo: charlesportwoodii/kaidyth_nrf52_bootloader
     tags: true
-    condition: DEBUG=1
+    condition: $DEBUG=0

@@ -1,5 +1,7 @@
 # Kaidyth Bootloader
 
+![Travis Build Status](https://img.shields.io/travis/com/charlesportwoodii/kaidyth_nrf52_bootloader.svg?label=TravisCI&style=flat-square)
+
 A secure bluetooth DFU bootloader for nRF52 with support for the following boards:
 
 - [nRF52840 MDK (Maker Diary)](https://wiki.makerdiary.com/nrf52840-mdk/)

@@ -46,3 +46,17 @@ install:
 
 script:
   - make clean_build
+
+deploy:
+  provider: releases
+  overwrite: true
+  file_glob: true
+  api_key:
+    secure: OR1ON5GoqkkGPswHZsv1OX9WddNwtjOFpZ/6M4Yf0Ktwzbzpa5DUeydi6HZlLvgxN1PgA5+ImSVNgbKa7kV4d2I8WlCv9lFtb1KE+VqAunc+y+2IHHLa1cwPUkwjkB0OzoSUmixvgLvPsjRItABlk5qmbqZI+Kog9UvpxQUqMJNEdfLrVmHZ5vKRCwo/Xsvn/TLCix/0C72xuv0EzI4cnZLbl5WrIAmqNt3qA9AtAQz1tjTw8SMZohno+lqKj+3LzwYPkhaKBA0y1cgxkF4knGjlKEQ0B4hqan0+RpYrMLWu3IvjvT1O01HPWf8q860DTb3QE2GwaLbWUo6RZNWxFILHLcz2jmA1jeXqs1Q79+RSOBOuN/FYC/u567FSeOYWYoGkUv9OhUwhA58Dg4stEhv11O12PIB/TFe/6Hg5ImtWY4nbQ8h9qu2p9FE1kQ5q8K07uaFwOJ89C8RpEtt6CAJOmKo06ezaaUgmcItQ6EjRPjyauj53bQ04to1IpW6C8p2eWC+ZBCyA3pqRWs8LA7MnMG/IT6xiJfDvoVBo+/B8vDSZECCP72jFYclMHk9ksWNMxuepBPJxYlPn7+vhspJiF9CvKNuug/2oMi9luuST17lvo4P04txVlvzo0xSOOYODMZipQ+k3d1Udei1cCXST/STwr/HLJ8QnCNQKTaU=
+  file: "$TRAVIS_BUILD_DIR/_build_$BOARD/*s140.*"
+  skip_cleanup: true
+  draft: true
+  on:
+    repo: charlesportwoodii/kaidyth_nrf52_bootloader
+    tags: true
+    condition: DEBUG=1

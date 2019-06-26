@@ -48,6 +48,7 @@
 
 #include <stdint.h>
 #include "boards.h"
+#include "bsp.h"
 #include "nrf_mbr.h"
 #include "nrf_bootloader.h"
 #include "nrf_bootloader_app_start.h"
@@ -60,6 +61,8 @@
 #include "app_error_weak.h"
 #include "nrf_bootloader_info.h"
 #include "nrfx.h"
+#include "app_timer.h"
+#include "nrf_drv_clock.h"
 #include "nrf_delay.h"
 #include "nrf_power.h"
 
@@ -122,20 +125,40 @@ static void dfu_observer(nrf_dfu_evt_type_t evt_type)
         case NRF_DFU_EVT_DFU_FAILED:
         case NRF_DFU_EVT_DFU_ABORTED:
         case NRF_DFU_EVT_DFU_INITIALIZED:
-            bsp_board_init(BSP_INIT_LEDS);
             bsp_board_led_on(BSP_BOARD_LED_0);
-            bsp_board_led_on(BSP_BOARD_LED_1);
-            bsp_board_led_off(BSP_BOARD_LED_2);
+            if (LEDS_NUMBER == 1) {
+                bsp_indication_set(BSP_INDICATE_ADVERTISING_DIRECTED);
+            } else {
+                bsp_board_led_on(BSP_BOARD_LED_1);
+                bsp_board_led_off(BSP_BOARD_LED_2);
+            }
             break;
         case NRF_DFU_EVT_TRANSPORT_ACTIVATED:
-            bsp_board_led_off(BSP_BOARD_LED_1);
-            bsp_board_led_on(BSP_BOARD_LED_2);
+            if (LEDS_NUMBER > 1) {
+                bsp_board_led_off(BSP_BOARD_LED_0);
+                bsp_board_led_off(BSP_BOARD_LED_1);
+                bsp_board_led_on(BSP_BOARD_LED_2);
+                bsp_indication_set(BSP_INDICATE_ADVERTISING_DIRECTED);
+            }
             break;
         case NRF_DFU_EVT_DFU_STARTED:
             break;
         default:
             break;
     }
+}
+
+/**@brief Setup timers */
+static void timers_init(void)
+{
+    bsp_board_init(BSP_INIT_LEDS);
+
+    uint32_t err_code;
+    err_code = app_timer_init();
+    APP_ERROR_CHECK(err_code);
+
+    err_code = bsp_init(BSP_INIT_LEDS, NULL);
+    APP_ERROR_CHECK(err_code);
 }
 
 
@@ -174,6 +197,8 @@ int main(void)
     }
 
     (*dblrst_mem) = 0;
+
+    timers_init();
 
     // Initiate the bootloader
     ret_val = nrf_bootloader_init(dfu_observer);

@@ -24,6 +24,14 @@ clean_build: clean
 clean_flash: clean_build
 	$(MAKE) -C boards/$(BOARD)/s140 erase flash
 
+usb_flash: check_port default
+	$(MAKE) -C boards/$(BOARD)/s140 usb_flash
+
+check_port:
+ifndef PORT
+	$(error PORT must be defined to perform usb serial flashing)
+endif
+
 clean: check-env patch
 ifneq ($(filter $(BOARD),$(BOARD_LIST)),)
 	@cd boards/$(BOARD)/s140 && $(MAKE) clean

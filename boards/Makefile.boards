@@ -16,7 +16,7 @@ endif
 BUILD_NUMBER := 1
 
 ifdef TRAVIS_TAG
-BUILD_NUMBER := $(shell python $(TRAVIS_BUILD_DIR)/blver.py $(TRAVIS_TAG))
+BUILD_NUMBER := $(shell python $(TRAVIS_BUILD_DIR)/blver.py --toHex=$(TRAVIS_TAG))
 $(info HEX_REVISION=$(BUILD_NUMBER))
 endif
 

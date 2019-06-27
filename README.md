@@ -9,6 +9,7 @@ A secure bluetooth DFU bootloader for nRF52 with support for the following board
 - [Nordic nRF52840DK PCA10056](https://www.nordicsemi.com/Software-and-Tools/Development-Kits/nRF52840-DK)
 - [Nordic nRF52840DK PCA10059 ("Dongle")](https://www.nordicsemi.com/Software-and-Tools/Development-Kits/nRF52840-Dongle)
 - [SparkFun Pro nRF52840](https://www.sparkfun.com/products/15025)
+- [Adafruit nRF52840 Feather Express](https://www.adafruit.com/product/4062)
 
 ## Features
 

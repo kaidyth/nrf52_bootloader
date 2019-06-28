@@ -1,6 +1,6 @@
 # Kaidyth Bootloader
 
-![Travis Build Status](https://img.shields.io/travis/com/charlesportwoodii/kaidyth_nrf52_bootloader.svg?label=TravisCI&style=flat-square)
+[![Travis Build Status](https://img.shields.io/travis/com/charlesportwoodii/kaidyth_nrf52_bootloader.svg?label=TravisCI&style=flat-square)](https://travis-ci.com/charlesportwoodii/kaidyth_nrf52_bootloader)
 
 A secure bluetooth DFU bootloader for nRF52 with support for the following boards:
 

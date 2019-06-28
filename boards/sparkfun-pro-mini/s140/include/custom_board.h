@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-Present Charles R. Portwood II <charlesportwoodii@erianna.com
+ * Copyright (c) 2019-Present Charles R. Portwood II <charlesportwoodii@erianna.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

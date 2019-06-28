@@ -1,6 +1,6 @@
 # Kaidyth Bootloader
 
-![Travis Build Status](https://img.shields.io/travis/com/charlesportwoodii/kaidyth_nrf52_bootloader.svg?label=TravisCI&style=flat-square)
+[![Travis Build Status](https://img.shields.io/travis/com/charlesportwoodii/kaidyth_nrf52_bootloader.svg?label=TravisCI&style=flat-square)](https://travis-ci.com/charlesportwoodii/kaidyth_nrf52_bootloader)
 
 A secure bluetooth DFU bootloader for nRF52 with support for the following boards:
 
@@ -10,6 +10,7 @@ A secure bluetooth DFU bootloader for nRF52 with support for the following board
 - [Nordic nRF52840DK PCA10059 ("Dongle")](https://www.nordicsemi.com/Software-and-Tools/Development-Kits/nRF52840-Dongle)
 - [SparkFun Pro nRF52840](https://www.sparkfun.com/products/15025)
 - [Adafruit nRF52840 Feather Express](https://www.adafruit.com/product/4062)
+- [Particle Xenon](https://docs.particle.io/xenon/)
 
 ## Features
 

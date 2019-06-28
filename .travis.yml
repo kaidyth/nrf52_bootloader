@@ -30,6 +30,8 @@ env:
     - BOARD=pca10056 DEBUG=1
     - BOARD=mdk
     - BOARD=mdk DEBUG=1
+    - BOARD=particle-xenon
+    - BOARD=particle-xenon DEBUG=1
 
 before_install:
   - chmod +x $TRAVIS_BUILD_DIR/.travis/before_install.sh

@@ -97,21 +97,21 @@ static void on_error(void)
 
 void app_error_handler(uint32_t error_code, uint32_t line_num, const uint8_t * p_file_name)
 {
-    NRF_LOG_ERROR("App Error Handler called: %s:%d", p_file_name, line_num);
+    NRF_LOG_ERROR("Kaidyth DFU: App Error Handler called: %s:%d", p_file_name, line_num);
     on_error();
 }
 
 
 void app_error_fault_handler(uint32_t id, uint32_t pc, uint32_t info)
 {
-    NRF_LOG_ERROR("Received a fault! id: 0x%08x, pc: 0x%08x, info: 0x%08x", id, pc, info);
+    NRF_LOG_ERROR("Kaidyth DFU: Received a fault! id: 0x%08x, pc: 0x%08x, info: 0x%08x", id, pc, info);
     on_error();
 }
 
 
 void app_error_handler_bare(uint32_t error_code)
 {
-    NRF_LOG_ERROR("Received an error: 0x%08x!", error_code);
+    NRF_LOG_ERROR("Kaidyth DFU: Received an error: 0x%08x!", error_code);
     on_error();
 }
 
@@ -151,16 +151,55 @@ static void dfu_observer(nrf_dfu_evt_type_t evt_type)
 /**@brief Setup timers */
 static void timers_init(void)
 {
-    bsp_board_init(BSP_INIT_LEDS);
-
     uint32_t err_code;
     err_code = app_timer_init();
     APP_ERROR_CHECK(err_code);
 
-    err_code = bsp_init(BSP_INIT_LEDS, NULL);
-    APP_ERROR_CHECK(err_code);
+    NRF_LOG_DEBUG("Kaidyth DFU: Timers initialized");
 }
 
+/**@brief Setup board support */
+static void kaidyth_bsp_init(void)
+{
+    uint32_t err_code;
+    err_code = bsp_init(BSP_INIT_LEDS, NULL);
+    APP_ERROR_CHECK(err_code);
+
+    NRF_LOG_DEBUG("Kaidyth DFU: BSP initialized");
+}
+
+/**@brief Double reset handling */
+static void double_reset(void)
+{
+    // Don't run the double reset check if we're already in DFU mode
+    uint8_t gpregret0 = nrf_power_gpregret_get();
+    if (gpregret0 != BOOTLOADER_DFU_START) {
+        // Go into DFU mode if the magic double reset memory block is set
+        if ((*dblrst_mem) == DFU_DBLRST_MAGIC) {
+            NRF_LOG_INFO("Kaidyth DFU: DBLRST: Double Reset detected, preparing to reboot into DFU mode.");
+            nrf_power_gpregret_set(BOOTLOADER_DFU_START);
+            do_reset();
+        }
+
+        // Indicate we want to do a double reset
+        (*dblrst_mem) = DFU_DBLRST_MAGIC;
+
+        // Wait 500ms for a second reset to occur
+        // If a second reset doesn't occur, the memory register will be zerod
+        NRFX_DELAY_US(DFU_DBLRST_DELAY * 1000);
+    }
+
+    (*dblrst_mem) = 0;
+}
+
+/**@brief Bootstrapping setup for custom functionality */
+static void kaidyth_bootstrap(void)
+{
+    bsp_board_init(BSP_INIT_LEDS);
+    double_reset();
+    timers_init();
+    kaidyth_bsp_init();
+}
 
 /**@brief Function for application main entry. */
 int main(void)
@@ -176,29 +215,9 @@ int main(void)
     (void) NRF_LOG_INIT(nrf_bootloader_dfu_timer_counter_get);
     NRF_LOG_DEFAULT_BACKENDS_INIT();
 
-    NRF_LOG_INFO("Inside main");
+    NRF_LOG_INFO("Kaidyth DFU: Inside main");
 
-    // Don't run the double reset check if we're already in DFU mode
-    uint8_t gpregret0 = nrf_power_gpregret_get();
-    if (gpregret0 != BOOTLOADER_DFU_START) {
-        // Go into DFU mode if the magic double reset memory block is set
-        if ((*dblrst_mem) == DFU_DBLRST_MAGIC) {
-            NRF_LOG_INFO("DBLRST: Double Reset detected, preparing to reboot into DFU mode.");
-            nrf_power_gpregret_set(BOOTLOADER_DFU_START);
-            do_reset();
-        }
-
-        // Indicate we want to do a double reset
-        (*dblrst_mem) = DFU_DBLRST_MAGIC;
-
-        // Wait 500ms for a second reset to occur
-        // If a second reset doesn't occur, the memory register will be zerod
-        NRFX_DELAY_US(DFU_DBLRST_DELAY * 1000);
-    }
-
-    (*dblrst_mem) = 0;
-
-    timers_init();
+    kaidyth_bootstrap();
 
     // Initiate the bootloader
     ret_val = nrf_bootloader_init(dfu_observer);
@@ -210,7 +229,7 @@ int main(void)
     nrf_bootloader_app_start();
 
     // Should never be reached.
-    NRF_LOG_INFO("After main");
+    NRF_LOG_INFO("Kaidyth DFU: After main");
 }
 
 /**

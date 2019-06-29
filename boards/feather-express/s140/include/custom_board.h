@@ -34,10 +34,16 @@ extern "C" {
 
 #include "nrf_gpio.h"
 
+#define NEOPIXEL_LEDS_NUMBER 1
+
+#define NEOPIXEL_LED_1  NRF_GPIO_PIN_MAP(1,16)
+
+#define NEOPIXEL_LEDS_LIST  { NEOPIXEL_LED_1 }
+
 #define LEDS_NUMBER    2
 
-#define LED_1          NRF_GPIO_PIN_MAP(1,15)
-#define LED_2          NRF_GPIO_PIN_MAP(1,10)
+#define LED_1          NRF_GPIO_PIN_MAP(1,10)
+#define LED_2          NRF_GPIO_PIN_MAP(1,15)
 
 #define LEDS_ACTIVE_STATE 0
 
@@ -50,7 +56,7 @@ extern "C" {
 
 #define BUTTONS_NUMBER 1
 
-#define BUTTON_1       NRF_GPIO_PIN_MAP(1, 02)
+#define BUTTON_1       NRF_GPIO_PIN_MAP(1,02)
 #define BUTTON_PULL    NRF_GPIO_PIN_PULLUP
 #define BUTTONS_ACTIVE_STATE 0
 

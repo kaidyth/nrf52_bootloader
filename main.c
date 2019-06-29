@@ -126,7 +126,7 @@ static void dfu_observer(nrf_dfu_evt_type_t evt_type)
         case NRF_DFU_EVT_DFU_ABORTED:
         case NRF_DFU_EVT_DFU_INITIALIZED:
             bsp_board_led_on(BSP_BOARD_LED_0);
-            if (LEDS_NUMBER == 1) {
+            if (LEDS_NUMBER <= 2) {
                 bsp_indication_set(BSP_INDICATE_ADVERTISING_DIRECTED);
             } else {
                 bsp_board_led_on(BSP_BOARD_LED_1);
@@ -134,7 +134,7 @@ static void dfu_observer(nrf_dfu_evt_type_t evt_type)
             }
             break;
         case NRF_DFU_EVT_TRANSPORT_ACTIVATED:
-            if (LEDS_NUMBER > 1) {
+            if (LEDS_NUMBER > 2) {
                 bsp_board_led_off(BSP_BOARD_LED_0);
                 bsp_board_led_off(BSP_BOARD_LED_1);
                 bsp_board_led_on(BSP_BOARD_LED_2);

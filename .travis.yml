@@ -32,6 +32,10 @@ env:
     - BOARD=mdk DEBUG=1
     - BOARD=particle-xenon
     - BOARD=particle-xenon DEBUG=1
+    - BOARD=particle-boron
+    - BOARD=particle-boron DEBUG=1
+    - BOARD=particle-argon
+    - BOARD=particle-argon DEBUG=1
     - BOARD=feather-express
     - BOARD=feather-express DEBUG=1
 

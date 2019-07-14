@@ -346,7 +346,10 @@ flash_softdevice: dfu_package
 
 flash: dfu_package
 	@echo Flashing: $(OUTPUT_DIRECTORY)/$(BOARD_DIST).hex
-	nrfjprog -f nrf52 --reset --program $(OUTPUT_DIRECTORY)/$(BOARD_DIST)_s140.hex --sectoranduicrerase
+	nrfjprog -f nrf52 --program $(OUTPUT_DIRECTORY)/$(BOARD_DIST)_s140.hex --sectoranduicrerase
+ifeq ($(BOARD), "pca10059")
+  nrfjprog --memwr 0x10001304 --val 0xFFFFFFFD
+endif
 
 usb_flash: $(OUTPUT_DIRECTORY)/$(BOARD_DIST)_s140.zip
 ifndef PORT

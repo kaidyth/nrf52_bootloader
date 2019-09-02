@@ -11,6 +11,7 @@ A secure bluetooth DFU bootloader for nRF52 with support for the following board
 - [SparkFun Pro nRF52840](https://www.sparkfun.com/products/15025)
 - [Adafruit nRF52840 Feather Express](https://www.adafruit.com/product/4062)
 - [Particle Xenon](https://docs.particle.io/xenon/)
+- [Pitaya Go](https://wiki.makerdiary.com/pitaya-go/)
 
 ## Features
 

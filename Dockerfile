@@ -1,12 +1,15 @@
 FROM ubuntu:18.04
 LABEL maintainer="Charles R. Portwood II <charlesportwoodii@erianna.com>"
 
-ENV GNU_INSTALL_ROOT="/root/gcc-arm-none-eabi-8-2018-q4-major/bin/"
+ENV GNU_INSTALL_ROOT="/root/gcc-arm-none-eabi-8-2019-q3-update/bin/"
 ENV NORDIC_SDK_PATH="/root/nrf_sdk/15.3.0"
-ENV PATH="$PATH:/root/gcc-arm-none-eabi-8-2018-q4-major/bin:/root/mergehex:/root/nrfjprog:/root/.local/bin"
+ENV PATH="$PATH:/root/gcc-arm-none-eabi-8-2019-q3-update/bin:/root/mergehex:/root/nrfjprog:/root/.local/bin"
 
 ENV BOARD=""
 ENV DEBUG=0
+ENV NRF_DFU_BL_ACCEPT_SAME_VERSION=1
+ENV NRF_DFU_REQUIRE_SIGNED_APP_UPDATE=1
+ENV NRF_BL_APP_SIGNATURE_CHECK_REQUIRED=0
 
 VOLUME [ "/app" ]
 

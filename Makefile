@@ -3,16 +3,16 @@ BOARD_LIST := $(sort $(subst /,,$(subst boards/,,$(dir $(wildcard boards/*/)))))
 
 rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
-.PHONY: help
-help:	## Lists all available commands and a brief description.
-	@grep -E '^[a-zA-Z/_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
-
 default: check-env ## Builds the bootloaded for selected board
 ifneq ($(filter $(BOARD),$(BOARD_LIST)),)
 	$(MAKE) merge -C boards/$(BOARD)/s140
 else
 	$(error Run `make` with a board specified: ($(BOARD_LIST)))
 endif
+
+.PHONY: help
+help:	## Lists all available commands and a brief description.
+	@grep -E '^[a-zA-Z/_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 all: check-env $(BOARD_LIST) ## Builds the bootloader for all boards
 

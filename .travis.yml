@@ -17,7 +17,7 @@ env:
   global:
     - GNU_INSTALL_ROOT="$HOME/gcc-arm-none-eabi-8-2019-q3-update/bin/"
     - NORDIC_SDK_PATH="$HOME/nrf_sdk/15.3.0"
-    - PATH="$PATH:$HOME/gcc-arm-none-eabi-8-2019-q3-update/bin"
+    - PATH="$PATH:$HOME/gcc-arm-none-eabi-8-2019-q3-update/bin:$HOME/mergehex"
   
   matrix:
     - BOARD=sparkfun-pro-mini

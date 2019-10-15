@@ -1,12 +1,12 @@
 #!/bin/bash
 
-if [ -z "$(ls -A $HOME/gcc-arm-none-eabi-8-2018-q4-major)" ]; then
+if [ -z "$(ls -A $HOME/gcc-arm-none-eabi-8-2019-q3-update)" ]; then
     cd $HOME
-    wget https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/8-2018q4/gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2
-    tar -xf gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2
-    rm -rf gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2
+    wget https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/8-2019q3/RC1.1/gcc-arm-none-eabi-8-2019-q3-update-linux.tar.bz2
+    tar -xf gcc-arm-none-eabi-8-2019-q3-update-linux.tar.bz2
+    rm -rf gcc-arm-none-eabi-8-2019-q3-update-linux.tar.bz2
 else
-    echo "gcc-arm-none-eabi-8-2018-q4-major-linux is already installed."
+    echo "gcc-arm-none-eabi-8-2019-q3-update-linux is already installed."
 fi
 
 if [ -z "$(ls -A $HOME/nrf_sdk/15.3.0)" ]; then

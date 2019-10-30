@@ -31,11 +31,11 @@ else
 fi
 
 if [ -z "$(ls -A $HOME/nrf_sdk/16.0.0/external/micro-ecc/micro-ecc)" ]; then
+    ls -laht $HOME/nrf_sdk/16.0.0/external/micro-ecc
     cd $HOME/nrf_sdk/16.0.0/external/micro-ecc
     git clone https://github.com/kmackay/micro-ecc
     chmod +x $HOME/nrf_sdk/16.0.0/external/micro-ecc/build_all.sh
     dos2unix $HOME/nrf_sdk/16.0.0/external/micro-ecc/build_all.sh
-    ls -laht $HOME/nrf_sdk/16.0.0/external/micro-ecc
     ls -laht $HOME/nrf_sdk/16.0.0/external/micro-ecc/micro-ecc
     ./build_all.sh
 else

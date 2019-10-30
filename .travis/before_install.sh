@@ -9,15 +9,15 @@ else
     echo "gcc-arm-none-eabi-8-2019-q3-update-linux is already installed."
 fi
 
-if [ -z "$(ls -A $HOME/nrf_sdk/15.3.0)" ]; then
+if [ -z "$(ls -A $HOME/nrf_sdk/16.0.0)" ]; then
     cd $HOME
-    mkdir -p $HOME/nrf_sdk/15.3.0
-    wget https://www.nordicsemi.com/-/media/Software-and-other-downloads/SDKs/nRF5/Binaries/nRF5SDK153059ac345.zip -O nRF5_SDK_15.3.0_59ac345.zip
-    unzip nRF5_SDK_15.3.0_59ac345.zip > /dev/null 2>&1
-    mv nRF5_SDK_15.3.0_59ac345/* $HOME/nrf_sdk/15.3.0
-    rm -rf nRF5_SDK_15.3.0_59ac345.zip
+    mkdir -p $HOME/nrf_sdk/16.0.0
+    wget https://www.nordicsemi.com/-/media/Software-and-other-downloads/SDKs/nRF5/Binaries/nRF5SDK160098a08e2.zip -O nRF5_SDK_16.0.0_98a08e2.zip
+    unzip nRF5_SDK_16.0.0_98a08e2.zip > /dev/null 2>&1
+    mv nRF5_SDK_16.0.0_98a08e2.zip/* $HOME/nrf_sdk/16.0.0
+    rm -rf nRF5_SDK_16.0.0_98a08e2.zip
     pwd
-    ls -laht $HOME/nrf_sdk/15.3.0
+    ls -laht $HOME/nrf_sdk/16.0.0
 else
     echo "nRF5 SDK is already installed."
 fi
@@ -30,13 +30,13 @@ else
     echo "nRF5 SDK CLI Tools is already installed."
 fi
 
-if [ -z "$(ls -A $HOME/nrf_sdk/15.3.0/external/micro-ecc/micro-ecc)" ]; then
-    cd $HOME/nrf_sdk/15.3.0/external/micro-ecc
+if [ -z "$(ls -A $HOME/nrf_sdk/16.0.0/external/micro-ecc/micro-ecc)" ]; then
+    cd $HOME/nrf_sdk/16.0.0/external/micro-ecc
     git clone https://github.com/kmackay/micro-ecc
-    chmod +x $HOME/nrf_sdk/15.3.0/external/micro-ecc/build_all.sh
-    dos2unix $HOME/nrf_sdk/15.3.0/external/micro-ecc/build_all.sh
-    ls -laht $HOME/nrf_sdk/15.3.0/external/micro-ecc
-    ls -laht $HOME/nrf_sdk/15.3.0/external/micro-ecc/micro-ecc
+    chmod +x $HOME/nrf_sdk/16.0.0/external/micro-ecc/build_all.sh
+    dos2unix $HOME/nrf_sdk/16.0.0/external/micro-ecc/build_all.sh
+    ls -laht $HOME/nrf_sdk/16.0.0/external/micro-ecc
+    ls -laht $HOME/nrf_sdk/16.0.0/external/micro-ecc/micro-ecc
     ./build_all.sh
 else
     echo "MicroECC is already installed."

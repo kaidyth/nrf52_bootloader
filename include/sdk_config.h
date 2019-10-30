@@ -1919,6 +1919,12 @@
 #define APP_USBD_DEVICE_VER_MINOR 0
 #endif
 
+// <i> Device version, will be converted automatically to BCD notation. Use just decimal values.
+
+#ifndef APP_USBD_DEVICE_VER_SUB
+#define APP_USBD_DEVICE_VER_SUB 0
+#endif
+
 // <q> APP_USBD_CONFIG_SELF_POWERED  - Self-powered device, as opposed to bus-powered.
 
 
@@ -5997,6 +6003,42 @@
 // <o> PM_BLE_OBSERVER_PRIO - Priority with which BLE events are dispatched to the Peer Manager module.
 #ifndef PM_BLE_OBSERVER_PRIO
 #define PM_BLE_OBSERVER_PRIO 1
+#endif
+
+// </h>
+//==========================================================
+
+// <h> Misc Bootloader settings 
+
+//==========================================================
+// <q> NRF_BL_DEBUG_PORT_DISABLE  - Disable access to the chip via the debug port.
+
+
+// <i> Disable access to the chip via the debug port.
+// <i> This modifies the APPROTECT and DEBUGCTRL registers.
+// <i> Enable this option in production code if such
+// <i> access should be prohibited. Read about the registers
+// <i> for more details.
+
+#ifndef NRF_BL_DEBUG_PORT_DISABLE
+#define NRF_BL_DEBUG_PORT_DISABLE 0
+#endif
+
+// <o> NRF_BL_FW_COPY_PROGRESS_STORE_STEP - Number of pages copied after which progress in the settings page is updated. 
+// <i> Progress stored in the settings page allows the bootloader to resume
+// <i> copying the new firmware in case of interruption (reset).
+// <i> If the value is small, then the resume point is more accurate. However,
+// <i>  it also impacts negatively on flash wear.
+
+#ifndef NRF_BL_FW_COPY_PROGRESS_STORE_STEP
+#define NRF_BL_FW_COPY_PROGRESS_STORE_STEP 8
+#endif
+
+// <o> NRF_BL_RESET_DELAY_MS - Time to wait before resetting the bootloader. 
+// <i> Time (in ms) to wait before resetting the bootloader after DFU has been completed or aborted. This allows more time for e.g. disconnecting the BLE link or writing logs.
+
+#ifndef NRF_BL_RESET_DELAY_MS
+#define NRF_BL_RESET_DELAY_MS 0
 #endif
 
 // </h>

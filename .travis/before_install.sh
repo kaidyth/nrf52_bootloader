@@ -14,6 +14,7 @@ if [ -z "$(ls -A $HOME/nrf_sdk/16.0.0)" ]; then
     mkdir -p $HOME/nrf_sdk/16.0.0
     wget https://www.nordicsemi.com/-/media/Software-and-other-downloads/SDKs/nRF5/Binaries/nRF5SDK160098a08e2.zip -O nRF5_SDK_16.0.0_98a08e2.zip
     mv nRF5_SDK_16.0.0_98a08e2.zip $HOME/nrf_sdk/16.0.0
+    cd $HOME/nrf_sdk/16.0.0
     unzip nRF5_SDK_16.0.0_98a08e2.zip > /dev/null 2>&1
     rm -rf nRF5_SDK_16.0.0_98a08e2.zip
     pwd

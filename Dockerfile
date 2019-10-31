@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 LABEL maintainer="Charles R. Portwood II <charlesportwoodii@erianna.com>"
 
 ENV GNU_INSTALL_ROOT="/root/gcc-arm-none-eabi-8-2019-q3-update/bin/"
-ENV NORDIC_SDK_PATH="/root/nrf_sdk/15.3.0"
+ENV NORDIC_SDK_PATH="/root/nrf_sdk/16.0.0"
 ENV PATH="$PATH:/root/gcc-arm-none-eabi-8-2019-q3-update/bin:/root/mergehex:/root/nrfjprog:/root/.local/bin"
 
 ENV BOARD=""

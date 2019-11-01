@@ -3,7 +3,7 @@ TARGETS          := nrf52840_xxaa
 OUTPUT_DIRECTORY := _build
 
 DEBUG ?= 0
-SD_REQ := 0xB6
+SD_REQ := 0xCA
 
 GIT_VERSION := $(shell git describe --always --tags)
 BOARD_DIST := $(BOARD)_bootloader-$(GIT_VERSION)

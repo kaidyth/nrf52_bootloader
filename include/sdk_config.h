@@ -6008,7 +6008,7 @@
 // </h>
 //==========================================================
 
-// <h> Misc Bootloader settings 
+// <h> Misc Bootloader settings
 
 //==========================================================
 // <q> NRF_BL_DEBUG_PORT_DISABLE  - Disable access to the chip via the debug port.
@@ -6024,7 +6024,7 @@
 #define NRF_BL_DEBUG_PORT_DISABLE 0
 #endif
 
-// <o> NRF_BL_FW_COPY_PROGRESS_STORE_STEP - Number of pages copied after which progress in the settings page is updated. 
+// <o> NRF_BL_FW_COPY_PROGRESS_STORE_STEP - Number of pages copied after which progress in the settings page is updated.
 // <i> Progress stored in the settings page allows the bootloader to resume
 // <i> copying the new firmware in case of interruption (reset).
 // <i> If the value is small, then the resume point is more accurate. However,
@@ -6034,7 +6034,7 @@
 #define NRF_BL_FW_COPY_PROGRESS_STORE_STEP 8
 #endif
 
-// <o> NRF_BL_RESET_DELAY_MS - Time to wait before resetting the bootloader. 
+// <o> NRF_BL_RESET_DELAY_MS - Time to wait before resetting the bootloader.
 // <i> Time (in ms) to wait before resetting the bootloader after DFU has been completed or aborted. This allows more time for e.g. disconnecting the BLE link or writing logs.
 
 #ifndef NRF_BL_RESET_DELAY_MS

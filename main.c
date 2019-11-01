@@ -82,9 +82,9 @@ static void do_reset(void)
     // To allow the buffer to be flushed by the host.
     nrf_delay_ms(100);
 #endif
-#ifdef NRF_DFU_DEBUG_VERSION
-    NRF_BREAKPOINT_COND;
-#endif
+
+    nrf_delay_ms(NRF_BL_RESET_DELAY_MS);
+
     NVIC_SystemReset();
 }
 

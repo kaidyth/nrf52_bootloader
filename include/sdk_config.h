@@ -6739,6 +6739,11 @@
 #define NRF_DFU_SERIAL_UART_USES_HWFC 0
 #endif
 
+
+#ifndef NRF_SORTLIST_ENABLED
+#define NRF_SORTLIST_ENABLED 1
+#endif
+
 // <<< end of configuration section >>>
 #endif //SDK_CONFIG_H
 

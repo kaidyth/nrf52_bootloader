@@ -3,7 +3,7 @@ language: c
 
 cache:
   directories:
-    - $HOME/gcc-arm-none-eabi-8-2019-q3-update
+    - $HOME/gcc-arm-none-eabi-9-2019-q4-update
     - $HOME/nrf_sdk/16.0.0
 
 addons:
@@ -15,9 +15,9 @@ addons:
 
 env:
   global:
-    - GNU_INSTALL_ROOT="$HOME/gcc-arm-none-eabi-8-2019-q3-update/bin/"
+    - GNU_INSTALL_ROOT="$HOME/gcc-arm-none-eabi-9-2019-q4-update/bin/"
     - NORDIC_SDK_PATH="$HOME/nrf_sdk/16.0.0"
-    - PATH="$PATH:$HOME/gcc-arm-none-eabi-8-2019-q3-update/bin:$HOME/mergehex"
+    - PATH="$PATH:$HOME/gcc-arm-none-eabi-9-2019-q4-update/bin:$HOME/mergehex"
 
   matrix:
     - BOARD=sparkfun-pro-mini

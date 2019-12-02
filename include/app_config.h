@@ -85,14 +85,6 @@ extern "C" {
 #define NRF_SDH_LOG_LEVEL 4
 #endif
 
-#ifndef APP_TIMER_CONFIG_LOG_ENABLED
-#define APP_TIMER_CONFIG_LOG_ENABLED 1
-#endif
-
-#ifndef APP_TIMER_CONFIG_LOG_LEVEL
-#define APP_TIMER_CONFIG_LOG_LEVEL 4
-#endif
-
 #endif // BOOTLOADER_DEBUG
 
 #ifndef NRF_DFU_BL_ALLOW_DOWNGRADE

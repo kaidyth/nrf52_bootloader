@@ -80,7 +80,7 @@ static void do_reset(void)
 
 #if NRF_MODULE_ENABLED(NRF_LOG_BACKEND_RTT)
     // To allow the buffer to be flushed by the host.
-    nrf_delay_ms(100);
+    nrf_delay_ms(500);
 #endif
 
     nrf_delay_ms(NRF_BL_RESET_DELAY_MS);

@@ -1,12 +1,12 @@
 #!/bin/bash
 
-if [ -z "$(ls -A $HOME/gcc-arm-none-eabi-9-2019-q4-major)" ]; then
+if [ -z "$(ls -A $HOME/gcc-arm-none-eabi-9-2020-q2-update)" ]; then
     cd $HOME
-    wget https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/9-2019q4/RC2.1/gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2
-    tar -xf gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2
-    rm -rf gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2
+    wget -O gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2 "https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2020q2/gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2?revision=05382cca-1721-44e1-ae19-1e7c3dc96118&la=en&hash=D7C9D18FCA2DD9F894FD9F3C3DC9228498FA281A"
+    tar -xf gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2
+    rm -rf gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2
 else
-    echo "gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux is already installed."
+    echo "gcc-arm-none-eabi-9-2020-q2-update-x86_64-linu is already installed."
 fi
 
 if [ -z "$(ls -A $HOME/nrf_sdk/16.0.0)" ]; then

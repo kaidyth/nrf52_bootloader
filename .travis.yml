@@ -38,6 +38,7 @@ env:
     - BOARD=particle-argon DEBUG=1
     - BOARD=feather-express
     - BOARD=feather-express DEBUG=1
+    - BOARD=default DEBUG=1
 
 before_install:
   - chmod +x $TRAVIS_BUILD_DIR/.travis/before_install.sh

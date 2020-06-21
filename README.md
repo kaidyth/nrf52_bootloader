@@ -42,6 +42,17 @@ nrfjprog --memwr 0x10001304 --val 0xFFFFFFFD
 nrfjprog -f nf52 --reset
 ```
 
+### Unsupported Boards
+
+While this bootloader has a variety of officially supported boards, your specific board, module, or chip may not yet have a formal definition. Published with the pre-built binaries is a "default" board in DEBUG mode only that has no LEDS or buttons that you can flash to your solution and the bootloader will just "work".
+
+Alternatively, you can build the variant yourself by running:
+
+```bash
+make BOARD=default clean_build
+```
+
+
 > Note that the default bootloader is distributed with a public keypair for application signing. This will permit anyone who has access to the key to be able to flash and overwrite any application you have while in OTA DFU mode. If you're using this bootloader in a production setting, it is recommended to build your own binary with your own keypair.
 
 ### Building/Development

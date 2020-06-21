@@ -32,7 +32,7 @@ A secure bluetooth DFU bootloader for nRF52 with support for the following board
 
 If you're just looking to flash the bootloader to your device, simply grab the appropriate board file from the Github releases page and flash using JLink/nrfjprog.
 
-```
+```bash
 nrfjprog -f nrf52 --erase
 nrfjprog -f nrf52 --program nrf52840_xxaa_s140_<board>.hex
 
@@ -48,7 +48,7 @@ nrfjprog -f nf52 --reset
 
 Cross platform builds are run through `Docker` to ensure build compatability, eliminate OS specific build issues, and ensure a functional build environment. Simply specify `DEBUG` and `BOARD` environment variables in `docker run` to build an appropriate build for your chip.
 
-```
+```bash
 docker build . -t kaidyth_dfu/toolchain:latest
 docker run -v${PWD-.}:/app --env BOARD=mdk-usb-dongle kaidyth_dfu/toolchain:latest
 ```

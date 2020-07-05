@@ -68,6 +68,6 @@ deploy:
   skip_cleanup: true
   draft: true
   on:
-    repo: kaidyth/kaidyth_nrf52_bootloader
+    repo: kaidyth/nrf52_bootloader
     tags: true
     condition: $DEBUG=0

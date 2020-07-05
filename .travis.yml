@@ -38,6 +38,8 @@ env:
     - BOARD=particle-argon DEBUG=1
     - BOARD=feather-express
     - BOARD=feather-express DEBUG=1
+    - BOARD=arduino-nano-33-ble
+    - BOARD=arduino-nano-33-ble DEBUG=1
     - BOARD=generic DEBUG=1
 
 before_install:
@@ -66,6 +68,6 @@ deploy:
   skip_cleanup: true
   draft: true
   on:
-    repo: charlesportwoodii/kaidyth_nrf52_bootloader
+    repo: kaidyth/kaidyth_nrf52_bootloader
     tags: true
     condition: $DEBUG=0

@@ -47,9 +47,9 @@ nrfjprog -f nf52 --reset
 
 ### Unsupported Boards
 
-While this bootloader has a variety of officially supported boards, your specific board, module, or chip may not yet have a formal definition. Published with the pre-built binaries is a generic board in DEBUG mode only that has no LEDS or buttons that you can flash to your solution and the bootloader will just "work".
+While this bootloader has a variety of officially supported boards, your specific board, module, or chip may not yet have a formal definition.
 
-Alternatively, you can build the variant yourself by running:
+The generic variant can be built by running the following command.
 
 ```bash
 make BOARD=generic clean_build

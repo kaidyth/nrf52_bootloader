@@ -1,24 +1,10 @@
 dist: bionic
-language: c
+language: generic
 
-cache:
-  directories:
-    - $HOME/gcc-arm-none-eabi-9-2020-q2-major
-    - $HOME/nrf_sdk/16.0.0
-
-addons:
-  apt:
-    packages:
-    - dos2unix
-    - python
-    - python-pip
+services:
+  - docker
 
 env:
-  global:
-    - GNU_INSTALL_ROOT="$HOME/gcc-arm-none-eabi-9-2020-q2-major/bin/"
-    - NORDIC_SDK_PATH="$HOME/nrf_sdk/16.0.0"
-    - PATH="$PATH:$HOME/gcc-arm-none-eabi-9-2020-q2-major/bin:$HOME/mergehex"
-
   matrix:
     - BOARD=sparkfun-pro-mini
     - BOARD=sparkfun-pro-mini DEBUG=1
@@ -43,20 +29,12 @@ env:
     - BOARD=generic DEBUG=1
 
 before_install:
-  - chmod +x $TRAVIS_BUILD_DIR/.travis/before_install.sh
   - ln -s default_private.pem private.pem
   - ln -s default_dfu_public_key.c dfu_public_key.c
-
-install:
-  - $TRAVIS_BUILD_DIR/.travis/before_install.sh
-  # Verify the arm-none-eabi-gcc binary is working correctly
-  - arm-none-eabi-gcc --version
-  # Verify mergehex is loaded into PATH
-  - mergehex --version
-  - pip install --user nrfutil
+  - docker pull kaidyth/nrf52_toolchain:latest
 
 script:
-  - make clean_build
+  - docker run -v${PWD-.}:/app --env BOARD=$BOARD --env DEBUG=$DEBUG kaidyth/nrf52_toolchain:latest
 
 deploy:
   provider: releases

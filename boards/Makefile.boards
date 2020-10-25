@@ -268,6 +268,10 @@ ifeq ($(NRF_DFU_BL_ALLOW_DOWNGRADE), 1)
 CFLAGS += -DNRF_DFU_BL_ALLOW_DOWNGRADE=1
 endif
 
+ifeq ($(BOARD_USE_SF_CLOCK), 1)
+CFLAGS += -DBOARD_USE_SF_CLOCK=1
+endif
+
 # C++ flags common to all targets
 CXXFLAGS += $(OPT)
 
@@ -295,6 +299,10 @@ endif
 
 ifeq ($(NRF_DFU_BL_ALLOW_DOWNGRADE), 1)
 ASMFLAGS += -DNRF_DFU_BL_ALLOW_DOWNGRADE=1
+endif
+
+ifeq ($(BOARD_USE_SF_CLOCK), 1)
+ASMFLAGS += -DBOARD_USE_SF_CLOCK=1
 endif
 
 # Linker flags

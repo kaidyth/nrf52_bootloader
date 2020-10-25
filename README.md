@@ -72,6 +72,12 @@ Hex and .zip archives for DFU flashes are outputted to the `_build_<board>` dire
 
 If you're interested in setting up your own development environment without docker, take a look at the [Getting Started](https://github.com/charlesportwoodii/kaidyth_nrf52_bootloader/wiki/Getting-Started) page for more information on the dependencies needed.
 
+### Clock Support
+
+Custom boards that do not have an external clock should define `BOARD_USE_SF_CLOCK` as part of the `make` command to utilize the onboard Soft Device LFCLK.
+
+> If you are able to see your custom board, not get a `GATT ERROR` when attempting to connect it's likely this flag needs to be set.
+
 ### Arduino Support
 
 This bootloader should compatible with Arduino Libraries excluding ones that interface with the Soft Device. Things such as I2C, GPIO, and Neopixels should work using their respective libaries.

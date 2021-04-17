@@ -130,8 +130,8 @@ static void dfu_observer(nrf_dfu_evt_type_t evt_type)
                 if (LEDS_NUMBER <= 2) {
                     bsp_indication_set(BSP_INDICATE_ADVERTISING_DIRECTED);
                 } else {
-                    bsp_board_led_on(BSP_BOARD_LED_1);
-                    bsp_board_led_off(BSP_BOARD_LED_2);
+                    bsp_board_led_on(BSP_BOARD_LED_2);
+                    bsp_board_led_off(BSP_BOARD_LED_1);
                 }
             }
             break;

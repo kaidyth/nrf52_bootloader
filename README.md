@@ -80,7 +80,7 @@ Custom boards that do not have an external clock should define `BOARD_USE_SF_CLO
 
 ### Arduino Support
 
-This bootloader should compatible with Arduino Libraries excluding ones that interface with the Soft Device. Things such as I2C, GPIO, and Neopixels should work using their respective libaries.
+This bootloader should compatible with Arduino Libraries excluding ones that interface with the Soft Device. Things such as I2C, GPIO, and Neopixels should work using their respective libaries, though I can't guarantee or provide support. Be sure to adjust your board linker settings and RAM regions to align with the Soft-Device version being used in the bootloader.
 
 ### Bluetooth / ArdinoBLE / Adarfruit NRF52 Bluefruit
 

@@ -1,6 +1,6 @@
 # Kaidyth Bootloader
 
-[![Travis Build Status](https://img.shields.io/travis/com/kaidyth/nrf52_bootloader.svg?label=TravisCI&style=flat-square)](https://travis-ci.com/kaidyth/nrf52_bootloader)
+[![Build Status](https://drone.erianna.com/api/badges/kaidyth/nrf52_bootloader/status.svg)](https://drone.erianna.com/kaidyth/nrf52_bootloader)
 
 A secure bluetooth DFU bootloader for nRF52 with support for the following boards:
 
@@ -62,9 +62,10 @@ make BOARD=generic clean_build
 Cross platform builds are run through `Docker` to ensure build compatability, eliminate OS specific build issues, and ensure a functional build environment. Simply specify `DEBUG` and `BOARD` environment variables in `docker run` to build an appropriate build for your chip.
 
 ```bash
-docker build . -t kaidyth_dfu/toolchain:latest
 docker run -v${PWD-.}:/app --env BOARD=mdk-usb-dongle kaidyth_dfu/toolchain:latest
 ```
+
+> You can re-build the local container by running: `docker build . -t kaidyth_dfu/toolchain:latest`
 
 Hex and .zip archives for DFU flashes are outputted to the `_build_<board>` directory after compilation succeeds.
 

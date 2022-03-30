@@ -1,0 +1,277 @@
+---
+kind: pipeline
+type: docker
+name: build-docker
+
+platform:
+  arch: amd64
+
+steps:
+  - name: docker
+    image: docker
+    environment:
+      username:
+        from_secret: DOCKER_USERNAME
+      password:
+        from_secret: DOCKER_PASSWORD
+    commands:
+      - docker build -f Dockerfile . -t kaidyth/nrf52_toolchain:latest --no-cache --compress
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+  - name: docker-publish
+    image: docker
+    when:
+      event:
+        - tag
+    environment:
+      username:
+        from_secret: DOCKER_USERNAME
+      password:
+        from_secret: DOCKER_PASSWORD
+    commands:
+      - docker login -u=$username -p=$password
+      - docker push kaidyth/nrf52_toolchain:latest
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+
+---
+kind: pipeline
+type: docker
+name: boards
+
+depends_on:
+  - build-docker
+
+environment:
+  DEBUG: 0
+
+steps:
+    - name: preflight
+      image: kaidyth/nrf52_toolchain:latest
+      commands:
+        - ln -s default_private.pem private.pem
+        - ln -s default_dfu_public_key.c dfu_public_key.c
+        - ls -laht
+    - name: sparkfun-pro-mini
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight
+      environment:
+          BOARD: sparkfun-pro-mini
+          DEBUG: 0
+      
+    - name: mdk-usb-dongle
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight
+      environment:
+          BOARD: mdk-usb-dongle
+          DEBUG: 0
+      
+    - name: mdk
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight
+      environment:
+          BOARD: mdk
+          DEBUG: 0
+      
+    - name: pca10059
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight
+      environment:
+          BOARD: pca10059
+          DEBUG: 0
+      
+    - name: pca10056
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight
+      environment:
+          BOARD: pca10056
+          DEBUG: 0
+      
+    - name: particle-xenon
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight
+      environment:
+          BOARD: particle-xenon
+          DEBUG: 0
+      
+    - name: particle-boron
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight
+      environment:
+          BOARD: particle-boron
+          DEBUG: 0
+      
+    - name: particle-argon
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight
+      environment:
+          BOARD: particle-argon
+          DEBUG: 0
+      
+    - name: feather-express
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight
+      environment:
+          BOARD: feather-express
+          DEBUG: 0
+      
+    - name: arduino-nano-33-ble
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight
+      environment:
+          BOARD: arduino-nano-33-ble
+          DEBUG: 0
+      
+    - name: generic
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight
+      environment:
+          BOARD: generic
+          DEBUG: 0
+      
+    - name: publish
+      image: plugins/github-release
+      settings:
+          draft: true
+          checksum:
+              - sha256
+          title: ${DRONE_TAG}
+          api_key:
+              from_secret: GH_ACCESS_TOKEN
+          files:
+              - _build_*/*_bootloader_*
+      when:
+          event: tag
+      depends_on:
+        - sparkfun-pro-mini
+        - mdk-usb-dongle
+        - mdk
+        - pca10059
+        - pca10056
+        - particle-xenon
+        - particle-boron
+        - particle-argon
+        - feather-express
+        - arduino-nano-33-ble
+
+---
+kind: pipeline
+type: docker
+name: boards-debug
+
+depends_on:
+  - build-docker
+
+environment:
+  DEBUG: 0
+
+steps:
+    - name: preflight-debug
+      image: kaidyth/nrf52_toolchain:latest
+      commands:
+        - ln -s default_private.pem private.pem
+        - ln -s default_dfu_public_key.c dfu_public_key.c
+    - name: sparkfun-pro-mini-debug
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight-debug
+      environment:
+          BOARD: sparkfun-pro-mini
+          DEBUG: 1
+    - name: mdk-usb-dongle-debug
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight-debug
+      environment:
+          BOARD: mdk-usb-dongle
+          DEBUG: 1
+      
+    - name: mdk-debug
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight-debug
+      environment:
+          BOARD: mdk
+          DEBUG: 1
+      
+    - name: pca10059-debug
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight-debug
+      environment:
+          BOARD: pca10059
+          DEBUG: 1
+      
+    - name: pca10056-debug
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight-debug
+      environment:
+          BOARD: pca10056
+          DEBUG: 1
+      
+    - name: particle-xenon-debug
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight-debug
+      environment:
+          BOARD: particle-xenon
+          DEBUG: 1
+      
+    - name: particle-boron-debug
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight-debug
+      environment:
+          BOARD: particle-boron
+          DEBUG: 1
+      
+    - name: particle-argon-debug
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight-debug
+      environment:
+          BOARD: particle-argon
+          DEBUG: 1
+      
+    - name: feather-express
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight-debug
+      environment:
+          BOARD: feather-express
+          DEBUG: 1
+      
+    - name: arduino-nano-33-ble-debug
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight-debug
+      environment:
+          BOARD: arduino-nano-33-ble
+          DEBUG: 1
+      
+    - name: generic-debug
+      image: kaidyth/nrf52_toolchain:latest
+      depends_on:
+          - preflight-debug
+      environment:
+          BOARD: generic
+          DEBUG: 1

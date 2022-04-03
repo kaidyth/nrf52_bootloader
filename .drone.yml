@@ -171,6 +171,7 @@ steps:
         - particle-argon
         - feather-express
         - arduino-nano-33-ble
+        - generic
 
 ---
 kind: pipeline

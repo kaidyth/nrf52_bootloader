@@ -157,7 +157,7 @@ steps:
           api_key:
               from_secret: GH_ACCESS_TOKEN
           files:
-              - _build_*/*_bootloader_*
+              - _build_*/*_bootloader-*
       when:
           event: tag
       depends_on:

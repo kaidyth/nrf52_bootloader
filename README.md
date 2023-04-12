@@ -65,7 +65,7 @@ Cross platform builds are run through `Docker` to ensure build compatability, el
 docker run -v${PWD-.}:/app --env BOARD=mdk-usb-dongle kaidyth/nrf52_toolchain:latest
 ```
 
-> You can re-build the local container by running: `docker build . -t kaidyth_dfu/toolchain:latest`
+> You can re-build the local container by running: `docker build . -t kaidyth/nrf52_toolchain:latest`
 
 Hex and .zip archives for DFU flashes are outputted to the `_build_<board>` directory after compilation succeeds.
 

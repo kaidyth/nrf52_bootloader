@@ -62,7 +62,7 @@ make BOARD=generic clean_build
 Cross platform builds are run through `Docker` to ensure build compatability, eliminate OS specific build issues, and ensure a functional build environment. Simply specify `DEBUG` and `BOARD` environment variables in `docker run` to build an appropriate build for your chip.
 
 ```bash
-docker run -v${PWD-.}:/app --env BOARD=mdk-usb-dongle kaidyth_dfu/toolchain:latest
+docker run -v${PWD-.}:/app --env BOARD=mdk-usb-dongle kaidyth/nrf52_toolchain:latest
 ```
 
 > You can re-build the local container by running: `docker build . -t kaidyth_dfu/toolchain:latest`

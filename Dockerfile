@@ -1,15 +1,16 @@
 FROM ubuntu:20.04
 LABEL maintainer="Charles R. Portwood II <charlesportwoodii@erianna.com>"
 
-ENV GNU_INSTALL_ROOT="/root/gcc-arm-none-eabi-10.3-2021.10/bin/"
-ENV NORDIC_SDK_PATH="/root/nrf_sdk/16.0.0"
-ENV PATH="$PATH:/root/gcc-arm-none-eabi-10.3-2021.10/bin:/root/nrf-command-line-tools/bin:/root/.local/bin"
+ENV GNU_INSTALL_ROOT="/root/gcc-arm-none-eabi-8-2018-q4-major/bin/"
+ENV NORDIC_SDK_PATH="/root/nrf_sdk/15.3.0"
+ENV PATH="$PATH:/root/gcc-arm-none-eabi-8-2018-q4-major/bin:/root/nrf-command-line-tools/bin:/root/.local/bin"
 
 ENV BOARD=""
 ENV DEBUG=0
 ENV NRF_DFU_BL_ACCEPT_SAME_VERSION=1
 ENV NRF_DFU_REQUIRE_SIGNED_APP_UPDATE=1
 ENV NRF_BL_APP_SIGNATURE_CHECK_REQUIRED=0
+ENV NRF_DFU_BLE_ADV_NAME="KAIDYTH_DFU"
 
 VOLUME [ "/app" ]
 
@@ -22,9 +23,9 @@ RUN apt update -qq && \
 RUN pip3 install --user nrfutil
 
 # Install GCC ARM
-ENV GCC_ARM_NAME_BZ="gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2"
+ENV GCC_ARM_NAME_BZ="gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2"
 RUN cd $HOME && \
-    curl -L "https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2" -o ${GCC_ARM_NAME_BZ} && \
+    curl -L "https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/8-2018q4/gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2" -o ${GCC_ARM_NAME_BZ} && \
     tar -xf ${GCC_ARM_NAME_BZ} && \
     rm -rf ${GCC_ARM_NAME_BZ} 
 
@@ -35,19 +36,21 @@ RUN cd $HOME && \
 
 # Install NRF SDK
 RUN cd $HOME && \
-        mkdir -p $HOME/nrf_sdk/16.0.0 && \
-        wget https://www.nordicsemi.com/-/media/Software-and-other-downloads/SDKs/nRF5/Binaries/nRF5SDK160098a08e2.zip -O nRF5_SDK_16.0.0_98a08e2.zip && \
-        mv nRF5_SDK_16.0.0_98a08e2.zip $HOME/nrf_sdk/16.0.0 && \
-        cd $HOME/nrf_sdk/16.0.0 && \
-        unzip nRF5_SDK_16.0.0_98a08e2.zip > /dev/null 2>&1 && \
-        rm -rf nRF5_SDK_16.0.0_98a08e2.zip 
+        mkdir -p $HOME/nrf_sdk/15.3.0 && \
+        wget https://www.nordicsemi.com/-/media/Software-and-other-downloads/SDKs/nRF5/Binaries/nRF5SDK153059ac345.zip -O nRF5_SDK_15.3.0_59ac345.zip && \
+        mv nRF5_SDK_15.3.0_59ac345.zip $HOME/nrf_sdk/15.3.0 && \
+        cd $HOME/nrf_sdk/15.3.0 && \
+        unzip nRF5_SDK_15.3.0_59ac345.zip > /dev/null 2>&1 && \
+        rm -rf nRF5_SDK_15.3.0_59ac345.zip && \
+		mv nRF5_SDK_15.3.0_59ac345/* . && \
+		rm -rf nRF5_SDK_15.3.0_59ac345
 
 # Install micro-ecc
-RUN cd $HOME/nrf_sdk/16.0.0/external/micro-ecc && \
+RUN cd $HOME/nrf_sdk/15.3.0/external/micro-ecc && \
     git clone https://github.com/kmackay/micro-ecc && \
-    chmod +x $HOME/nrf_sdk/16.0.0/external/micro-ecc/build_all.sh && \
-    dos2unix $HOME/nrf_sdk/16.0.0/external/micro-ecc/build_all.sh && \
-    ls -laht $HOME/nrf_sdk/16.0.0/external/micro-ecc/micro-ecc && \
+    chmod +x $HOME/nrf_sdk/15.3.0/external/micro-ecc/build_all.sh && \
+    dos2unix $HOME/nrf_sdk/15.3.0/external/micro-ecc/build_all.sh && \
+    ls -laht $HOME/nrf_sdk/15.3.0/external/micro-ecc/micro-ecc && \
     ./build_all.sh
 
 # Install

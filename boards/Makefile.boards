@@ -3,15 +3,23 @@ TARGETS          := nrf52840_xxaa
 OUTPUT_DIRECTORY := _build
 
 DEBUG ?= 0
-SD_REQ := 0xCA
+SD_REQ := 0xB6
+
+SECURE := secure
+
+ifeq ($(NRF_DFU_REQUIRE_SIGNED_APP_UPDATE), 0)
+SECURE = unsecure
+endif
 
 GIT_VERSION := $(shell git describe --always --tags)
-BOARD_DIST := $(BOARD)_bootloader-$(GIT_VERSION)
+BOARD_DIST := $(BOARD)_bootloader-$(GIT_VERSION)_$(SECURE)
 
 ifeq ($(DEBUG), 1)
 GIT_VERSION = $(shell git describe --dirty --always --tags)
-BOARD_DIST := debug_$(BOARD)_bootloader-$(GIT_VERSION)
+BOARD_DIST := debug_$(BOARD)_bootloader-$(GIT_VERSION)_$(SECURE)
 endif
+
+
 
 BUILD_NUMBER := 1
 
@@ -130,8 +138,7 @@ SRC_FILES += \
   $(SDK_ROOT)/components/libraries/crypto/backend/oberon/oberon_backend_hash.c \
   $(SDK_ROOT)/components/libraries/crypto/backend/oberon/oberon_backend_hmac.c \
   $(SDK_ROOT)/components/libraries/bsp/bsp.c \
-  $(SDK_ROOT)/components/libraries/timer/app_timer2.c \
-  $(SDK_ROOT)/components/libraries/timer/drv_rtc.c \
+  $(SDK_ROOT)/components/libraries/timer/app_timer.c \
   $(SDK_ROOT)/components/libraries/sortlist/nrf_sortlist.c \
   $(SDK_ROOT)/components/libraries/button/app_button.c \
   $(SDK_ROOT)/modules/nrfx/drivers/src/nrfx_gpiote.c \
@@ -194,6 +201,7 @@ INC_FOLDERS += \
   $(PROJ_DIR) \
   $(SDK_ROOT)/components/libraries/crypto/backend/nrf_sw \
   $(SDK_ROOT)/modules/nrfx/mdk \
+  $(BOARD_DIR)/include \
   $(SDK_ROOT)/components/libraries/bootloader/ble_dfu \
   $(SDK_ROOT)/components/softdevice/common \
   $(SDK_ROOT)/external/nano-pb \
@@ -202,7 +210,6 @@ INC_FOLDERS += \
   $(SDK_ROOT)/components/libraries/ringbuf \
   $(SDK_ROOT)/integration/nrfx \
   $(SDK_ROOT)/modules/nrfx/mdk \
-  $(BOARD_DIR)/include \
   $(SDK_ROOT)/integration/nrfx \
   $(SDK_ROOT)/integration/nrfx/legacy \
   $(SDK_ROOT)/external/segger_rtt \
@@ -224,7 +231,7 @@ INC_FOLDERS += \
 
 # Libraries common to all targets
 LIB_FILES += \
-  $(SDK_ROOT)/external/nrf_oberon/lib/cortex-m4/hard-float/liboberon_3.0.1.a \
+  $(SDK_ROOT)/external/nrf_oberon/lib/cortex-m4/hard-float/liboberon_2.0.7.a \
   $(SDK_ROOT)/external/nrf_cc310_bl/lib/cortex-m4/hard-float/libnrf_cc310_bl_0.9.12.a \
 
 ifeq ($(DEBUG), 1)
@@ -237,18 +244,17 @@ OPT += -flto
 
 # C flags common to all targets
 CFLAGS += $(OPT)
-CFLAGS += -DAPP_TIMER_V2
-CFLAGS += -DAPP_TIMER_V2_RTC1_ENABLED
 CFLAGS += -DBLE_STACK_SUPPORT_REQD
 CFLAGS += -DFLOAT_ABI_HARD
 CFLAGS += -DNRF52840_XXAA
 CFLAGS += -DNRF_DFU_SETTINGS_VERSION=2
 CFLAGS += -DNRF_DFU_SVCI_ENABLED
-CFLAGS += -DNRF_SD_BLE_API_VERSION=7
+CFLAGS += -DNRF_SD_BLE_API_VERSION=6
 CFLAGS += -DS140
 CFLAGS += -DSOFTDEVICE_PRESENT
 CFLAGS += -DSVC_INTERFACE_CALL_AS_NORMAL_FUNCTION
 CFLAGS += -DCONFIG_GPIO_AS_PINRESET
+#CFLAGS += -DNRF_DFU_BLE_ADV_NAME=\"$(NRF_DFU_BLE_ADV_NAME)\"
 CFLAGS += -DCONFIG_NFCT_PINS_AS_GPIOS
 CFLAGS += -mcpu=cortex-m4
 CFLAGS += -mthumb -mabi=aapcs
@@ -262,6 +268,24 @@ CFLAGS += -DBOOTLOADER_DEBUG
 CFLAGS += -DDEBUG_NRF
 CFLAGS += -DDEBUG
 CFLAGS += -DNRF_DFU_DEBUG_VERSION
+endif
+
+ifeq ($(NRF_DFU_REQUIRE_SIGNED_APP_UPDATE), 1)
+CFLAGS += -DNRF_DFU_REQUIRE_SIGNED_APP_UPDATE=1
+else
+CFLAGS += -DNRF_DFU_REQUIRE_SIGNED_APP_UPDATE=0
+endif
+
+ifeq ($(NRF_DFU_BL_ACCEPT_SAME_VERSION), 1)
+CFLAGS += -DNRF_DFU_BL_ACCEPT_SAME_VERSION=1
+else
+CFLAGS += -DNRF_DFU_BL_ACCEPT_SAME_VERSION=0
+endif
+
+ifeq ($(NRF_BL_APP_SIGNATURE_CHECK_REQUIRED), 1)
+CFLAGS += -DNRF_BL_APP_SIGNATURE_CHECK_REQUIRED=1
+else
+CFLAGS += -DNRF_BL_APP_SIGNATURE_CHECK_REQUIRED=0
 endif
 
 ifeq ($(NRF_DFU_BL_ALLOW_DOWNGRADE), 1)
@@ -280,21 +304,38 @@ ASMFLAGS += -g3
 ASMFLAGS += -mcpu=cortex-m4
 ASMFLAGS += -mthumb -mabi=aapcs
 ASMFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
-ASMFLAGS += -DAPP_TIMER_V2
-ASMFLAGS += -DAPP_TIMER_V2_RTC1_ENABLED
 ASMFLAGS += -DBLE_STACK_SUPPORT_REQD
 ASMFLAGS += -DFLOAT_ABI_HARD
 ASMFLAGS += -DNRF52840_XXAA
 ASMFLAGS += -DNRF_DFU_SETTINGS_VERSION=2
 ASMFLAGS += -DNRF_DFU_SVCI_ENABLED
-ASMFLAGS += -DNRF_SD_BLE_API_VERSION=7
+ASMFLAGS += -DNRF_SD_BLE_API_VERSION=6
 ASMFLAGS += -DS140
 ASMFLAGS += -DSOFTDEVICE_PRESENT
 ASMFLAGS += -DSVC_INTERFACE_CALL_AS_NORMAL_FUNCTION
 ASMFLAGS += -DCONFIG_GPIO_AS_PINRESET
+ASMFLAGS += -DNRF_DFU_BLE_ADV_NAME=\"$(NRF_DFU_BLE_ADV_NAME)\"
 ifeq ($(DEBUG),1)
 ASMFLAGS += -DBOOTLOADER_DEBUG
 ASMFLAGS += -DNRF_DFU_DEBUG_VERSION
+endif
+
+ifeq ($(NRF_DFU_REQUIRE_SIGNED_APP_UPDATE), 1)
+ASMFLAGS += -DNRF_DFU_REQUIRE_SIGNED_APP_UPDATE=1
+else
+ASMFLAGS += -DNRF_DFU_REQUIRE_SIGNED_APP_UPDATE=0
+endif
+
+ifeq ($(NRF_DFU_BL_ACCEPT_SAME_VERSION), 1)
+ASMFLAGS += -DNRF_DFU_BL_ACCEPT_SAME_VERSION=1
+else
+ASMFLAGS += -DNRF_DFU_BL_ACCEPT_SAME_VERSION=0
+endif
+
+ifeq ($(NRF_BL_APP_SIGNATURE_CHECK_REQUIRED), 1)
+ASMFLAGS += -DNRF_BL_APP_SIGNATURE_CHECK_REQUIRED=1
+else
+ASMFLAGS += -DNRF_BL_APP_SIGNATURE_CHECK_REQUIRED=0
 endif
 
 ifeq ($(NRF_DFU_BL_ALLOW_DOWNGRADE), 1)
@@ -347,8 +388,8 @@ endif
 
 # Flash softdevice
 flash_softdevice: dfu_package
-	@echo Flashing: s140_nrf52_7.0.1_softdevice.hex
-	nrfjprog -f nrf52 --program $(SDK_ROOT)/components/softdevice/s140/hex/s140_nrf52_7.0.1_softdevice.hex --sectorerase
+	@echo Flashing: s140_nrf52_6.1.1_softdevice.hex
+	nrfjprog -f nrf52 --program $(SDK_ROOT)/components/softdevice/s140/hex/s140_nrf52_6.1.1_softdevice.hex --sectorerase
 	nrfjprog -f nrf52 --reset
 
 flash: dfu_package
@@ -365,7 +406,7 @@ endif
 	nrfutil dfu usb-serial -pkg $(OUTPUT_DIRECTORY)/$(BOARD_DIST)_s140.zip -p $(PORT)
 
 $(OUTPUT_DIRECTORY)/$(BOARD_DIST)_s140.zip: merge
-	nrfutil pkg generate --sd-req $(SD_REQ) --hw-version 52 --key-file $(PROJ_DIR)/private.pem --bootloader-version $(BUILD_NUMBER) --bootloader $(OUTPUT_DIRECTORY)/nrf52840_xxaa.hex --softdevice $(SDK_ROOT)/components/softdevice/s140/hex/s140_nrf52_7.0.1_softdevice.hex $(OUTPUT_DIRECTORY)/$(BOARD_DIST)_s140.zip
+	nrfutil pkg generate --sd-req $(SD_REQ) --hw-version 52 --key-file $(PROJ_DIR)/private.pem --bootloader-version $(BUILD_NUMBER) --bootloader $(OUTPUT_DIRECTORY)/nrf52840_xxaa.hex --softdevice $(SDK_ROOT)/components/softdevice/s140/hex/s140_nrf52_6.1.1_softdevice.hex $(OUTPUT_DIRECTORY)/$(BOARD_DIST)_s140.zip
 
 $(OUTPUT_DIRECTORY)/$(BOARD_DIST).zip: default
 	nrfutil pkg generate --sd-req $(SD_REQ) --hw-version 52 --key-file $(PROJ_DIR)/private.pem --bootloader-version $(BUILD_NUMBER) --bootloader $(OUTPUT_DIRECTORY)/nrf52840_xxaa.hex $(OUTPUT_DIRECTORY)/$(BOARD_DIST).zip
@@ -375,7 +416,7 @@ dfu_package: $(OUTPUT_DIRECTORY)/$(BOARD_DIST)_s140.zip $(OUTPUT_DIRECTORY)/$(BO
 # Merge application and softdevice
 merge: default
 	@echo Merging application and softdevice...
-	mergehex -m $(OUTPUT_DIRECTORY)/nrf52840_xxaa.hex $(SDK_ROOT)/components/softdevice/s140/hex/s140_nrf52_7.0.1_softdevice.hex -o $(OUTPUT_DIRECTORY)/$(BOARD_DIST)_s140.hex
+	mergehex -m $(OUTPUT_DIRECTORY)/nrf52840_xxaa.hex $(SDK_ROOT)/components/softdevice/s140/hex/s140_nrf52_6.1.1_softdevice.hex -o $(OUTPUT_DIRECTORY)/$(BOARD_DIST)_s140.hex
 
 erase:
 	nrfjprog -f nrf52 --eraseall

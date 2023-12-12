@@ -69,3 +69,12 @@ patch: ## Patches the files in the nordic SDK to support additional bootloader f
 			patch --forward --unified $(NORDIC_SDK_PATH)/$${file} ./sdk/$${file}; \
 		fi \
 	done;
+	@for file in $(subst ./sdk/,,$(call rwildcard,./sdk/,*nrf_bootloader.c)); do \
+		echo "Copying $$file to $(NORDIC_SDK_PATH)/$${file#./sdk/}"; \
+		cp ./sdk/$$file $(NORDIC_SDK_PATH)/$${file#./sdk/}; \
+	done;
+	@for file in $(subst ./sdk/,,$(call rwildcard,./sdk/,*nrf_dfu_validation.c)); do \
+		echo "Copying $$file to $(NORDIC_SDK_PATH)/$${file#./sdk/}"; \
+		cp ./sdk/$$file $(NORDIC_SDK_PATH)/$${file#./sdk/}; \
+	done;
+

@@ -125,26 +125,25 @@ static void dfu_observer(nrf_dfu_evt_type_t evt_type)
         case NRF_DFU_EVT_DFU_FAILED:
         case NRF_DFU_EVT_DFU_ABORTED:
         case NRF_DFU_EVT_DFU_INITIALIZED:
-            if (LEDS_NUMBER > 0) {
-                bsp_board_led_on(BSP_BOARD_LED_0);
-                if (LEDS_NUMBER <= 2) {
-                    bsp_indication_set(BSP_INDICATE_ADVERTISING_DIRECTED);
-                } else {
-                    bsp_board_led_on(BSP_BOARD_LED_2);
-                    bsp_board_led_off(BSP_BOARD_LED_1);
-                }
-            }
+			if (LEDS_NUMBER > 0) {
+				bsp_indication_set(BSP_INDICATE_ADVERTISING_WHITELIST);
+			}
             break;
         case NRF_DFU_EVT_TRANSPORT_ACTIVATED:
-            if (LEDS_NUMBER > 2) {
-                bsp_board_led_off(BSP_BOARD_LED_0);
-                bsp_board_led_off(BSP_BOARD_LED_1);
-                bsp_board_led_on(BSP_BOARD_LED_2);
-                bsp_indication_set(BSP_INDICATE_ADVERTISING_DIRECTED);
-            }
+			if (LEDS_NUMBER > 0) {
+				bsp_indication_set(BSP_INDICATE_ADVERTISING_WHITELIST);
+			}
             break;
         case NRF_DFU_EVT_DFU_STARTED:
+			if (LEDS_NUMBER > 0) {
+				bsp_indication_set(BSP_INDICATE_BONDING);
+			}
             break;
+        case NRF_DFU_EVT_DFU_COMPLETED:
+			if (LEDS_NUMBER > 1) {
+				bsp_board_led_on(BSP_BOARD_LED_1);
+			}
+		break;
         default:
             break;
     }
@@ -172,29 +171,6 @@ static void kaidyth_bsp_init(void)
     NRF_LOG_DEBUG("Kaidyth DFU: BSP initialized");
 }
 
-/**@brief Double reset handling */
-static void double_reset(void)
-{
-    // Don't run the double reset check if we're already in DFU mode
-    uint8_t gpregret0 = nrf_power_gpregret_get();
-    if (gpregret0 != BOOTLOADER_DFU_START) {
-        // Go into DFU mode if the magic double reset memory block is set
-        if ((*dblrst_mem) == DFU_DBLRST_MAGIC) {
-            NRF_LOG_INFO("Kaidyth DFU: DBLRST: Double Reset detected, preparing to reboot into DFU mode.");
-            nrf_power_gpregret_set(BOOTLOADER_DFU_START);
-            do_reset();
-        }
-
-        // Indicate we want to do a double reset
-        (*dblrst_mem) = DFU_DBLRST_MAGIC;
-
-        // Wait 500ms for a second reset to occur
-        // If a second reset doesn't occur, the memory register will be zerod
-        NRFX_DELAY_US(DFU_DBLRST_DELAY * 1000);
-    }
-
-    (*dblrst_mem) = 0;
-}
 
 /**@brief Bootstrapping setup for custom functionality */
 static void kaidyth_bootstrap(void)
@@ -203,9 +179,23 @@ static void kaidyth_bootstrap(void)
         bsp_board_init(BSP_INIT_LEDS);
     }
 
-    double_reset();
+   // double_reset();
+   //
+	//button_pressed(BUTTON_DFU)
+   // nrf_power_gpregret_set(BOOTLOADER_DFU_START);
+    if (BUTTONS_NUMBER > 0)
+    {
+		nrf_gpio_cfg_input(BUTTON_1,BUTTON_PULL);
+		nrf_delay_ms(50);
+		if(nrf_gpio_pin_read(BUTTON_1) == BUTTONS_ACTIVE_STATE)
+			nrf_power_gpregret_set(BOOTLOADER_DFU_START);
+    }
     timers_init();
     kaidyth_bsp_init();
+	if (LEDS_NUMBER > 2) {
+		bsp_board_led_on(BSP_BOARD_LED_2);
+    }
+	
 }
 
 /**@brief Function for application main entry. */
@@ -225,18 +215,18 @@ int main(void)
     NRF_LOG_INFO("Kaidyth DFU: Inside main");
 
     kaidyth_bootstrap();
+	
+	// Initiate the bootloader
+	ret_val = nrf_bootloader_init(dfu_observer);
+	APP_ERROR_CHECK(ret_val);
 
-    // Initiate the bootloader
-    ret_val = nrf_bootloader_init(dfu_observer);
-    APP_ERROR_CHECK(ret_val);
+	// Either there was no DFU functionality enabled in this project or the DFU module detected
+	// no ongoing DFU operation and found a valid main application.
+	// Boot the main application.
+	nrf_bootloader_app_start();
 
-    // Either there was no DFU functionality enabled in this project or the DFU module detected
-    // no ongoing DFU operation and found a valid main application.
-    // Boot the main application.
-    nrf_bootloader_app_start();
-
-    // Should never be reached.
-    NRF_LOG_INFO("Kaidyth DFU: After main");
+	// Should never be reached.
+	NRF_LOG_INFO("Kaidyth DFU: After main");
 }
 
 /**

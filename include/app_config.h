@@ -4,7 +4,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+#include "config.h"
 #define _PINNUM(port, pin) ((port)*32 + (pin))
 
 #ifndef NRF_DFU_BL_ACCEPT_SAME_VERSION

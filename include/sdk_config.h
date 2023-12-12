@@ -43,7 +43,6 @@
 #ifndef SDK_CONFIG_H
 #define SDK_CONFIG_H
 // <<< Use Configuration Wizard in Context Menu >>>\n
-
 #include "app_config.h"
 // <h> nRF_Bootloader
 
@@ -1345,6 +1344,7 @@
 #ifndef NRF_DFU_BLE_ADV_NAME
 #define NRF_DFU_BLE_ADV_NAME "KAIDYTH_DFU"
 #endif
+
 
 // <o> NRF_DFU_BLE_ADV_INTERVAL - Advertising interval (in units of 0.625 ms)
 #ifndef NRF_DFU_BLE_ADV_INTERVAL
@@ -4174,7 +4174,7 @@
 // <e> APP_USBD_CONFIG_LOG_ENABLED - Enable logging in the module.
 //==========================================================
 #ifndef APP_USBD_CONFIG_LOG_ENABLED
-#define APP_USBD_CONFIG_LOG_ENABLED 0
+#define APP_USBD_CONFIG_LOG_ENABLED 4
 #endif
 // <o> APP_USBD_CONFIG_LOG_LEVEL  - Default Severity level
 

@@ -1,11 +1,12 @@
 BOARD ?=
+SOFTDEVICE ?=
 BOARD_LIST := $(sort $(subst /,,$(subst boards/,,$(dir $(wildcard boards/*/)))))
 
 rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
 default: check-env ## Builds the bootloaded for selected board
 ifneq ($(filter $(BOARD),$(BOARD_LIST)),)
-	$(MAKE) merge -C boards/$(BOARD)/s140
+	$(MAKE) merge -C boards/$(SOFTDEVICE)/$(BOARD)
 else
 	$(error Run `make` with a board specified: ($(BOARD_LIST)))
 endif
@@ -17,19 +18,19 @@ help:	## Lists all available commands and a brief description.
 all: check-env $(BOARD_LIST) ## Builds the bootloader for all boards
 
 $(BOARD_LIST): ## Builds the bootloader for the specified board
-	$(MAKE) -C boards/$@/s140
+	$(MAKE) -C boards/$(SOFTDEVICE)/$@
 
 flash: default ## Builds and flashes the bootloader over nrfjprog
-	$(MAKE) flash -C boards/$(BOARD)/s140
+	$(MAKE) flash -C boards/$(SOFTDEVICE)/$(BOARD)
 
 clean_build: clean ## Builds and creates a DFU .zip package
-	$(MAKE) -C boards/$(BOARD)/s140 dfu_package
+	$(MAKE) -C boards/$(SOFTDEVICE)/$(BOARD) dfu_package
 
 clean_flash: clean_build ## Performs a clean build and flashes it via jLink
-	$(MAKE) -C boards/$(BOARD)/s140 erase flash
+	$(MAKE) -C boards/$(SOFTDEVICE)/$(BOARD) erase flash
 
 usb_flash: check_port default ## Flashes the .zip over USB
-	$(MAKE) -C boards/$(BOARD)/s140 usb_flash
+	$(MAKE) -C boards/$(SOFTDEVICE)/$(BOARD) usb_flash
 
 check_port:
 ifndef PORT
@@ -38,13 +39,13 @@ endif
 
 clean: check-env patch ## Cleans the environment for the specified board
 ifneq ($(filter $(BOARD),$(BOARD_LIST)),)
-	@cd boards/$(BOARD)/s140 && $(MAKE) clean
+	@cd boards/$(SOFTDEVICE)/$(BOARD) && $(MAKE) clean
 	@rm -rf $(BOARD).hex
-	@rm -f $(BOARD)_s140.zip
-	@rm -f debug_$(BOARD)_s140.zip
+	@rm -f $(BOARD)_$(SOFTDEVICE).zip
+	@rm -f debug_$(BOARD)_$(SOFTDEVICE).zip
 else
 	@for board in $(BOARD_LIST); do \
-		cd boards/$$board/s140 && $(MAKE) clean; \
+		cd boards/$(SOFTDEVICE)/$$board && $(MAKE) clean; \
 		cd ../../..; \
 	done
 	@rm -f *.hex
@@ -69,9 +70,9 @@ patch: ## Patches the files in the nordic SDK to support additional bootloader f
 			patch --forward --unified $(NORDIC_SDK_PATH)/$${file} ./sdk/$${file}; \
 		fi \
 	done;
-	@for file in $(subst ./sdk/,,$(call rwildcard,./sdk/,*nrf_bootloader.c)); do \
-		echo "Copying $$file to $(NORDIC_SDK_PATH)/$${file#./sdk/}"; \
-		cp ./sdk/$$file $(NORDIC_SDK_PATH)/$${file#./sdk/}; \
+	@for file in $(subst ./sdk/,,$(call rwildcard,./sdk/,*/$(SOFTDEVICE)/nrf_bootloader.c)); do \
+		echo "Copying $$file to $(NORDIC_SDK_PATH)/components/libraries/bootloader/nrf_bootloader.c"; \
+		cp ./sdk/$$file $(NORDIC_SDK_PATH)/components/libraries/bootloader/nrf_bootloader.c; \
 	done;
 	@for file in $(subst ./sdk/,,$(call rwildcard,./sdk/,*nrf_dfu_validation.c)); do \
 		echo "Copying $$file to $(NORDIC_SDK_PATH)/$${file#./sdk/}"; \

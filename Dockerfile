@@ -6,6 +6,7 @@ ENV NORDIC_SDK_PATH="/root/nrf_sdk/15.3.0"
 ENV PATH="$PATH:/root/gcc-arm-none-eabi-8-2018-q4-major/bin:/root/nrf-command-line-tools/bin:/root/.local/bin"
 
 ENV BOARD=""
+ENV SOFTDEVICE=""
 ENV DEBUG=0
 ENV NRF_DFU_BL_ACCEPT_SAME_VERSION=1
 ENV NRF_DFU_REQUIRE_SIGNED_APP_UPDATE=1

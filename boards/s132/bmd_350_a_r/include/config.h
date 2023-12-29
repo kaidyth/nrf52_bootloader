@@ -1,0 +1,15 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#ifndef NRF_DFU_BLE_ADV_NAME
+#define NRF_DFU_BLE_ADV_NAME "TRIGGER_DFU"
+#endif
+
+#define BLEDIS_MANUFACTURER "Man"
+#define BLEDIS_MODEL "nRF52832 Board"
+
+#ifndef NRF_DFU_BL_ALLOW_DOWNGRADE
+#define NRF_DFU_BL_ALLOW_DOWNGRADE 1
+#endif
+#endif
+

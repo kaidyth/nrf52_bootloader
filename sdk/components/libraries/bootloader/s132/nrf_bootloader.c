@@ -640,7 +640,7 @@ ret_code_t nrf_bootloader_init(nrf_dfu_observer_t observer)
     }
     else
     {
-		// Erase additional data like peer data or advertisement name
+	// Erase additional data like peer data or advertisement name
         ret_val = nrf_dfu_settings_additional_erase();
         if (ret_val != NRF_SUCCESS)
         {
@@ -650,7 +650,8 @@ ret_code_t nrf_bootloader_init(nrf_dfu_observer_t observer)
         m_flash_write_done = false;
         nrf_dfu_settings_backup(flash_write_callback);
         ASSERT(m_flash_write_done);
-
+	NRF_LOG_DEBUG("Try to start app");
+	// loop_forever(); // This function will never return.
         nrf_bootloader_app_start();
         NRF_LOG_ERROR("Unreachable");
     }

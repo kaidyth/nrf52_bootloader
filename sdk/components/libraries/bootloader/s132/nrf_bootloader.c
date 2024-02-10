@@ -640,20 +640,64 @@ ret_code_t nrf_bootloader_init(nrf_dfu_observer_t observer)
     }
     else
     {
+ 	NRF_LOG_ERROR("Stato 0");
+
 	// Erase additional data like peer data or advertisement name
         ret_val = nrf_dfu_settings_additional_erase();
         if (ret_val != NRF_SUCCESS)
         {
             return NRF_ERROR_INTERNAL;
         }
+	NRF_LOG_ERROR("Stato 1");
 
         m_flash_write_done = false;
         nrf_dfu_settings_backup(flash_write_callback);
         ASSERT(m_flash_write_done);
-	NRF_LOG_DEBUG("Try to start app");
-	// loop_forever(); // This function will never return.
-        nrf_bootloader_app_start();
-        NRF_LOG_ERROR("Unreachable");
+		NRF_LOG_ERROR("1");
+ // Disable all interrupts
+	/*	NVIC->ICER[0]=0xFFFFFFFF;
+		NVIC->ICPR[0]=0xFFFFFFFF;
+		#if defined(__NRF_NVIC_ISER_COUNT) && __NRF_NVIC_ISER_COUNT == 2
+		NVIC->ICER[1]=0xFFFFFFFF;
+		NVIC->ICPR[1]=0xFFFFFFFF;
+		#endif
+
+		uint32_t fwd_ret;
+		uint32_t app_addr;
+
+		if ( *((uint32_t*)(SOFTDEVICE_INFO_STRUCT_ADDRESS+4)) == 0x51B1E5DB)
+		{
+			// App starts after SoftDevice
+			app_addr = SD_SIZE_GET(MBR_SIZE);
+			fwd_ret = sd_softdevice_vector_table_base_set(app_addr);
+		}
+		else
+		{
+			// App starts right after MBR
+			app_addr = MBR_SIZE;
+			sd_mbr_command_t command =
+			{
+				.command = SD_MBR_COMMAND_IRQ_FORWARD_ADDRESS_SET,
+				.params.irq_forward_address_set.address = app_addr,
+			};
+
+			fwd_ret = sd_mbr_command(&command);
+		}
+
+		// unlikely failed to forward vector table, manually set forward address
+		if ( fwd_ret != NRF_SUCCESS )
+		{
+			// MBR use first 4-bytes of SRAM to store foward address
+			*(uint32_t *)(0x20000000) = app_addr;
+		}
+		NRF_LOG_ERROR("QUI");
+		while (NRF_LOG_PROCESS());
+		NRF_LOG_DEBUG("Try to start app");*/
+	 	//loop_forever(); // This function will never return.
+		//bootloader_util_reset(app_addr);
+
+		nrf_bootloader_app_start();
+		NRF_LOG_ERROR("Unreachable");
     }
 
     // Should not be reached.

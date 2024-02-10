@@ -187,7 +187,12 @@ static void kaidyth_bootstrap(void)
    //
 	//button_pressed(BUTTON_DFU)
    // nrf_power_gpregret_set(BOOTLOADER_DFU_START);
-    if (BUTTONS_NUMBER > 0)
+   //avoid to enter into bootloader mode if the pin used is for wake up
+   uint32_t reset_reason = 0;    
+   reset_reason = NRF_POWER->RESETREAS; 
+   //clear register 
+   NRF_POWER->RESETREAS = NRF_POWER->RESETREAS;
+    if (BUTTONS_NUMBER > 0 && ((reset_reason & 0x10000) != 0x10000))
     {
 		nrf_gpio_cfg_input(BUTTON_1,BUTTON_PULL);
 		nrf_delay_ms(50);

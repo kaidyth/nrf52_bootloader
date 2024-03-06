@@ -105,6 +105,10 @@ void app_error_handler(uint32_t error_code, uint32_t line_num, const uint8_t * p
 void app_error_fault_handler(uint32_t id, uint32_t pc, uint32_t info)
 {
     NRF_LOG_ERROR("Kaidyth DFU: Received a fault! id: 0x%08x, pc: 0x%08x, info: 0x%08x", id, pc, info);
+    assert_info_t * p_info = (assert_info_t *) 0x2000FF50;
+    NRF_LOG_ERROR("ASSERTION FAILED at %s:%u",
+    p_info->p_file_name,
+    p_info->line_num);
     on_error();
 }
 
@@ -183,7 +187,12 @@ static void kaidyth_bootstrap(void)
    //
 	//button_pressed(BUTTON_DFU)
    // nrf_power_gpregret_set(BOOTLOADER_DFU_START);
-    if (BUTTONS_NUMBER > 0)
+   //avoid to enter into bootloader mode if the pin used is for wake up
+   uint32_t reset_reason = 0;    
+   reset_reason = NRF_POWER->RESETREAS; 
+   //clear register 
+   NRF_POWER->RESETREAS = NRF_POWER->RESETREAS;
+    if (BUTTONS_NUMBER > 0 && ((reset_reason & 0x10000) != 0x10000))
     {
 		nrf_gpio_cfg_input(BUTTON_1,BUTTON_PULL);
 		nrf_delay_ms(50);

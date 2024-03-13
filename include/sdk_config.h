@@ -43,7 +43,6 @@
 #ifndef SDK_CONFIG_H
 #define SDK_CONFIG_H
 // <<< Use Configuration Wizard in Context Menu >>>\n
-
 #include "app_config.h"
 // <h> nRF_Bootloader
 
@@ -464,7 +463,7 @@
 // <i> The CC310 hardware-accelerated cryptography backend with reduced functionality and footprint (only available on nRF52840).
 //==========================================================
 #ifndef NRF_CRYPTO_BACKEND_CC310_BL_ENABLED
-#define NRF_CRYPTO_BACKEND_CC310_BL_ENABLED 1
+#define NRF_CRYPTO_BACKEND_CC310_BL_ENABLED 0
 #endif
 // <q> NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP224R1_ENABLED  - Enable the secp224r1 elliptic curve support using CC310_BL.
 
@@ -948,7 +947,7 @@
 // <e> NRF_CRYPTO_BACKEND_MICRO_ECC_ENABLED - Enable the micro-ecc backend.
 //==========================================================
 #ifndef NRF_CRYPTO_BACKEND_MICRO_ECC_ENABLED
-#define NRF_CRYPTO_BACKEND_MICRO_ECC_ENABLED 0
+#define NRF_CRYPTO_BACKEND_MICRO_ECC_ENABLED 1
 #endif
 // <q> NRF_CRYPTO_BACKEND_MICRO_ECC_ECC_SECP192R1_ENABLED  - Enable secp192r1 (NIST 192-bit) curve
 
@@ -1011,7 +1010,7 @@
 // <i> The nRF SW cryptography backend (only used in bootloader context).
 //==========================================================
 #ifndef NRF_CRYPTO_BACKEND_NRF_SW_ENABLED
-#define NRF_CRYPTO_BACKEND_NRF_SW_ENABLED 0
+#define NRF_CRYPTO_BACKEND_NRF_SW_ENABLED 1
 #endif
 // <q> NRF_CRYPTO_BACKEND_NRF_SW_HASH_SHA256_ENABLED  - nRF SW hash backend support for SHA-256
 
@@ -1345,6 +1344,7 @@
 #ifndef NRF_DFU_BLE_ADV_NAME
 #define NRF_DFU_BLE_ADV_NAME "KAIDYTH_DFU"
 #endif
+
 
 // <o> NRF_DFU_BLE_ADV_INTERVAL - Advertising interval (in units of 0.625 ms)
 #ifndef NRF_DFU_BLE_ADV_INTERVAL
@@ -4174,7 +4174,7 @@
 // <e> APP_USBD_CONFIG_LOG_ENABLED - Enable logging in the module.
 //==========================================================
 #ifndef APP_USBD_CONFIG_LOG_ENABLED
-#define APP_USBD_CONFIG_LOG_ENABLED 0
+#define APP_USBD_CONFIG_LOG_ENABLED 4
 #endif
 // <o> APP_USBD_CONFIG_LOG_LEVEL  - Default Severity level
 

@@ -195,7 +195,7 @@ static void kaidyth_bootstrap(void)
     if (BUTTONS_NUMBER > 0 && ((reset_reason & 0x10000) != 0x10000))
     {
 		nrf_gpio_cfg_input(BUTTON_1,BUTTON_PULL);
-		nrf_delay_ms(50);
+		//nrf_delay_ms(50);
 		if(nrf_gpio_pin_read(BUTTON_1) == BUTTONS_ACTIVE_STATE)
 			nrf_power_gpregret_set(BOOTLOADER_DFU_START);
     }
